@@ -18,8 +18,16 @@ const barrelsByOptions = {
 };
 
 function hasTsOrTsx(dirPath) {
-  const names = fs.readdirSync(dirPath);
-  return names.some((name) => name !== "index.ts" && tsInclude.test(name));
+  const names = fs.readdirSync(dirPath, { withFileTypes: true });
+  for (const entry of names) {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      if (hasTsOrTsx(fullPath)) return true;
+    } else if (entry.name !== "index.ts" && tsInclude.test(entry.name)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function buildBarrelsbyArgs(dirArg) {
