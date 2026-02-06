@@ -24,7 +24,11 @@
       "@/widgets/*": ["./src/widgets/*"],
       "@/features/*": ["./src/features/*"],
       "@/entities/*": ["./src/entities/*"],
-      "@/shared/*": ["./src/shared/*"]
+      // shared
+      "@/ui/*": ["./src/shared/ui/*"],
+      "@/lib/*": ["./src/shared/lib/*"],
+      "@/api/*": ["./src/shared/api/*"],
+      "@/styles/*": ["./src/shared/styles/*"]
     }
   },
   "include": [
