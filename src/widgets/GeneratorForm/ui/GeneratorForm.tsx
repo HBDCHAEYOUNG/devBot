@@ -123,7 +123,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           type="submit"
           disabled={isLoading}
           className={cn(
-            "w-10 h-10 rounded-full flex items-center justify-center absolute right-4 bottom- ",
+            "w-10 h-10 rounded-full flex items-center justify-center absolute right-4 bottom-3",
             isLoading ? "bg-gray-500" : "bg-black"
           )}
         >
