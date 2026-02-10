@@ -11,9 +11,9 @@ export const DIFFICULTY_LABELS = {
 } as const;
 
 export const LENGTH_LABELS = {
-  short: "짧음 (1000-1500자)",
-  medium: "중간 (2000-3000자)",
-  long: "김 (4000-5000자)",
+  short: "짧음",
+  medium: "중간",
+  long: "김",
 } as const;
 
 export const LENGTH_RANGES = {
