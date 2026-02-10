@@ -23,7 +23,6 @@ export const documentStorage = {
       hashtags: apiResponse.hashtags,
       templateType: requestInfo.templateType,
       topic: requestInfo.topic,
-      keywords: requestInfo.keywords,
       difficulty: requestInfo.difficulty,
       length: requestInfo.length,
       createdAt: now,
@@ -64,8 +63,7 @@ export const documentStorage = {
     return this.getAll().filter(
       (doc) =>
         doc.title.toLowerCase().includes(lowerQuery) ||
-        doc.topic.toLowerCase().includes(lowerQuery) ||
-        doc.keywords.some((k) => k.toLowerCase().includes(lowerQuery))
+        doc.topic.toLowerCase().includes(lowerQuery)
     );
   },
 

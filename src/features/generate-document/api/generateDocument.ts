@@ -11,7 +11,6 @@ export async function generateDocument(
   const promptGenerator = DOCUMENT_PROMPTS[request.templateType];
   const prompt = promptGenerator(
     request.topic,
-    request.keywords,
     request.difficulty,
     request.length
   );

@@ -19,17 +19,11 @@ const getLengthDescription = (length: Length): string => {
 };
 
 export const DOCUMENT_PROMPTS = {
-  tutorial: (
-    topic: string,
-    keywords: string[],
-    difficulty: Difficulty,
-    length: Length
-  ) => `
+  tutorial: (topic: string, difficulty: Difficulty, length: Length) => `
 당신은 개발자를 위한 기술 블로그 작성 전문가입니다.
 다음 조건에 맞는 **튜토리얼** 형식의 블로그 글을 작성해주세요.
 
 **주제**: ${topic}
-**핵심 키워드**: ${keywords.join(", ")}
 **대상 독자**: ${getDifficultyDescription(difficulty)}
 **목표 분량**: ${getLengthDescription(length)}
 
@@ -77,17 +71,11 @@ ${difficulty === "beginner" ? "- 전문 용어 사용 시 반드시 설명 추�
 - 예시: React, TypeScript, API, 성능최적화, 웹개발
 `,
 
-  til: (
-    topic: string,
-    keywords: string[],
-    difficulty: Difficulty,
-    length: Length
-  ) => `
+  til: (topic: string, difficulty: Difficulty, length: Length) => `
 당신은 개발자를 위한 기술 블로그 작성 전문가입니다.
 다음 조건에 맞는 **TIL(Today I Learned)** 형식의 블로그 글을 작성해주세요.
 
 **주제**: ${topic}
-**핵심 키워드**: ${keywords.join(", ")}
 **대상 독자**: ${getDifficultyDescription(difficulty)}
 **목표 분량**: ${getLengthDescription(length)}
 
@@ -132,17 +120,11 @@ ${difficulty === "beginner" ? "- 전문 용어 사용 시 반드시 설명 추�
 - 3-7개 제공
 `,
 
-  troubleshooting: (
-    topic: string,
-    keywords: string[],
-    difficulty: Difficulty,
-    length: Length
-  ) => `
+  troubleshooting: (topic: string, difficulty: Difficulty, length: Length) => `
 당신은 개발자를 위한 기술 블로그 작성 전문가입니다.
 다음 조건에 맞는 **트러블슈팅** 형식의 블로그 글을 작성해주세요.
 
 **주제**: ${topic}
-**핵심 키워드**: ${keywords.join(", ")}
 **대상 독자**: ${getDifficultyDescription(difficulty)}
 **목표 분량**: ${getLengthDescription(length)}
 

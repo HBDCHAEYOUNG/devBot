@@ -18,11 +18,6 @@ export function useGenerateDocument() {
       return null;
     }
 
-    if (request.keywords.length === 0) {
-      setError("최소 1개 이상의 키워드를 입력해주세요.");
-      return null;
-    }
-
     setIsGenerating(true);
     setError(null);
     setProgress("");

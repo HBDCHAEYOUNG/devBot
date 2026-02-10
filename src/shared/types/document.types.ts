@@ -4,7 +4,6 @@ export type TemplateType = "tutorial" | "til" | "troubleshooting";
 
 export interface GenerateDocumentRequest {
   topic: string;
-  keywords: string[];
   length: Length;
   difficulty: Difficulty;
   templateType: TemplateType;
@@ -26,7 +25,6 @@ export interface GeneratedDocument {
   // 생성 메타데이터
   templateType: TemplateType;
   topic: string;
-  keywords: string[];
   difficulty: Difficulty;
   length: Length;
   createdAt: string;
