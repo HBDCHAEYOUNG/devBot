@@ -18,17 +18,19 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/app/*": ["./app/*"],
-      "@/widgets/*": ["./src/widgets/*"],
-      "@/features/*": ["./src/features/*"],
-      "@/entities/*": ["./src/entities/*"],
+      "@/app/*": ["app/*"],
+      "@/widgets/*": ["src/widgets/*"],
+      "@/features/*": ["src/features/*"],
+      "@/entities/*": ["src/entities/*"],
       // shared
-      "@/ui/*": ["./src/shared/ui/*"],
-      "@/lib/*": ["./src/shared/lib/*"],
-      "@/api/*": ["./src/shared/api/*"],
-      "@/styles/*": ["./src/shared/styles/*"]
+      "@/ui/*": ["src/shared/ui/*"],
+      "@/lib/*": ["src/shared/lib/*"],
+      "@/api/*": ["src/shared/api/*"],
+      "@/styles/*": ["src/shared/styles/*"],
+      "@/config/*": ["src/shared/config/*"],
+      "@/types/*": ["src/shared/types/*"]
     }
   },
   "include": [
