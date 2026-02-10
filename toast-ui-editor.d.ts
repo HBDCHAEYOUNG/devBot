@@ -8,8 +8,9 @@ declare module "@toast-ui/editor" {
 
   export default class Editor {
     constructor(options: EditorOptions);
-    static factory(options: EditorOptions): Editor | { destroy(): void; setMarkdown(markdown: string): void };
     getMarkdown(): string;
+    setMarkdown(markdown: string): void;
+    on(event: "change", callback: () => void): void;
     destroy(): void;
   }
 }
