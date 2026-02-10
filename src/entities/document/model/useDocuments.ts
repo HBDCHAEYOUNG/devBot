@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useCallback } from "react";
 import { documentStorage } from "./documentStorage";
 import type { GeneratedDocument, TemplateType } from "@/types/document.types";
