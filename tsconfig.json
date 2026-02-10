@@ -30,10 +30,12 @@
       "@/api/*": ["src/shared/api/*"],
       "@/styles/*": ["src/shared/styles/*"],
       "@/config/*": ["src/shared/config/*"],
-      "@/types/*": ["src/shared/types/*"]
+      "@/types/*": ["src/shared/types/*"],
+      "@/icons/*": ["src/shared/icons/*"]
     }
   },
   "include": [
+    "svgr.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
