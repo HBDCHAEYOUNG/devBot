@@ -13,11 +13,11 @@ import TrashIcon from "@/icons/trash.svg";
 
 dayjs.locale("ko");
 
-interface DocumentViewerProps {
+interface DocumentDetailProps {
   id: string;
 }
 
-export function DocumentViewer({ id }: DocumentViewerProps) {
+export function DocumentDetail({ id }: DocumentDetailProps) {
   const { getById } = useDocuments();
   const document: GeneratedDocument | null = getById(id);
 
