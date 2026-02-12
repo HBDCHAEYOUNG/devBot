@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Editor from "@toast-ui/editor";
-import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 
@@ -15,6 +13,13 @@ interface ToastMarkdownProps {
   height?: string;
 }
 
+type ToastInstance = {
+  destroy: () => void;
+  getMarkdown?: () => string;
+  setMarkdown?: (markdown: string) => void;
+  on?: (event: string, callback: () => void) => void;
+};
+
 export function ToastMarkdown({
   mode,
   value,
@@ -22,7 +27,7 @@ export function ToastMarkdown({
   height = "400px",
 }: ToastMarkdownProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const instanceRef = useRef<Editor | Viewer | null>(null);
+  const instanceRef = useRef<ToastInstance | null>(null);
   const onChangeRef = useRef(onChange);
 
   useEffect(() => {
@@ -32,46 +37,54 @@ export function ToastMarkdown({
   useEffect(() => {
     if (!containerRef.current) return;
 
+    let cancelled = false;
+
     if (instanceRef.current) {
       instanceRef.current.destroy();
       instanceRef.current = null;
     }
 
-    if (mode === "edit") {
-      const editor = new Editor({
-        el: containerRef.current,
-        height,
-        initialValue: value,
-      });
+    const init = async () => {
+      if (mode === "edit") {
+        const { default: Editor } = await import("@toast-ui/editor");
+        if (cancelled || !containerRef.current) return;
+        const editor = new Editor({
+          el: containerRef.current,
+          height,
+          initialValue: value,
+        });
+        editor.on("change", () => {
+          onChangeRef.current(editor.getMarkdown());
+        });
+        instanceRef.current = editor as ToastInstance;
+      } else {
+        const { default: Viewer } = await import(
+          "@toast-ui/editor/dist/toastui-editor-viewer"
+        );
+        if (cancelled || !containerRef.current) return;
+        const viewer = new Viewer({
+          el: containerRef.current,
+          height,
+          initialValue: value,
+        });
+        instanceRef.current = viewer as ToastInstance;
+      }
+    };
 
-      editor.on("change", () => {
-        onChangeRef.current(editor.getMarkdown());
-      });
-
-      instanceRef.current = editor;
-    } else {
-      const viewer = new Viewer({
-        el: containerRef.current,
-        height,
-        initialValue: value,
-      });
-
-      instanceRef.current = viewer;
-    }
+    init();
 
     return () => {
+      cancelled = true;
       instanceRef.current?.destroy();
       instanceRef.current = null;
     };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, height]);
 
   useEffect(() => {
-    if (!instanceRef.current) return;
-    if (mode !== "edit") return;
-
-    (instanceRef.current as Editor).setMarkdown(value);
+    const instance = instanceRef.current;
+    if (!instance?.setMarkdown || mode !== "edit") return;
+    instance.setMarkdown(value);
   }, [value, mode]);
 
   return <div ref={containerRef} />;
