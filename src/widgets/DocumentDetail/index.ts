@@ -1,1 +1,1 @@
-export * from "./ui/DocumentDetail";
+export * from './ui/DocumentDetail'

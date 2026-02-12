@@ -1,25 +1,24 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useDocuments } from "../model/useDocuments";
 import type { GeneratedDocument } from "@/types/document.types";
-import PenIcon from "@/icons/pen.svg";
-import TrashIcon from "@/icons/trash.svg";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useInputModal } from "@/hooks/useInputModal";
-import { InputModal } from "@/ui/InputModal";
+import { useDropdownMenu } from "@/hooks/useDropdownMenu";
+import { InputModal } from "@/ui/index";
+import { DocumentItemMenu } from "./DocumentItemMenu";
+import PenIcon from "@/icons/pen.svg";
+import TrashIcon from "@/icons/trash.svg";
 
 export function DocumentsList() {
   const router = useRouter();
   const pathname = usePathname();
   const { documents, refresh, delete: deleteDoc, update } = useDocuments();
-
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const { openMenuId, menuRef, toggle, close } = useDropdownMenu();
   const [editingDoc, setEditingDoc] = useState<GeneratedDocument | null>(null);
-
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const renameModal = useInputModal({
     validate: (v) => (!v.trim() ? "제목을 입력해주세요." : null),
@@ -43,22 +42,6 @@ export function DocumentsList() {
     return () => window.removeEventListener("documents-updated", handleUpdate);
   }, [refresh]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpenMenuId(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleMenuToggle = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setOpenMenuId(openMenuId === id ? null : id);
-  };
-
   const handleDelete = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -66,7 +49,7 @@ export function DocumentsList() {
 
     const success = deleteDoc(id);
     if (success) {
-      setOpenMenuId(null);
+      close();
 
       if (pathname === `/document/${id}`) {
         router.push("/");
@@ -76,7 +59,7 @@ export function DocumentsList() {
 
   const handleRename = (doc: GeneratedDocument, e: React.MouseEvent) => {
     e.stopPropagation();
-    setOpenMenuId(null);
+    close();
     setEditingDoc(doc);
     renameModal.open(doc.title);
   };
@@ -121,37 +104,25 @@ export function DocumentsList() {
               {doc.title}
             </Link>
 
-            <div
-              className="relative"
-              ref={openMenuId === doc.id ? menuRef : null}
-            >
-              <button
-                onClick={(e) => handleMenuToggle(doc.id, e)}
-                className="p-1 cursor-pointer"
-                aria-label="메뉴 열기"
-              >
-                ⋮
-              </button>
-
-              {openMenuId === doc.id && (
-                <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[140px]">
-                  <button
-                    onClick={(e) => handleRename(doc, e)}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
-                  >
-                    <PenIcon className="size-4" />
-                    제목 수정
-                  </button>
-                  <button
-                    onClick={(e) => handleDelete(doc.id, e)}
-                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
-                  >
-                    <TrashIcon className="size-4 [&_path]:fill-red-600" />
-                    삭제
-                  </button>
-                </div>
-              )}
-            </div>
+            <DocumentItemMenu
+              doc={doc}
+              isOpen={openMenuId === doc.id}
+              menuRef={menuRef}
+              onToggle={toggle}
+              items={[
+                {
+                  label: "제목 수정",
+                  icon: <PenIcon className="size-4" />,
+                  onClick: (e) => handleRename(doc, e),
+                },
+                {
+                  label: "삭제",
+                  icon: <TrashIcon className="size-4 [&_path]:fill-red-600" />,
+                  variant: "danger",
+                  onClick: (e) => handleDelete(doc.id, e),
+                },
+              ]}
+            />
           </li>
         ))}
       </ul>
