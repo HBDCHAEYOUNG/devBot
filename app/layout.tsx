@@ -1,4 +1,6 @@
 import "@/styles/globals.css";
+import { SidebarProvider, SidebarTrigger } from "@/ui/index";
+import { AppSidebar } from "@/widgets/AppSidebar";
 
 export const metadata = {
   title: "AI 기술 블로그 글 생성기",
@@ -16,7 +18,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <main>{children}</main>
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="min-w-0 overflow-hidden">{children}</main>
+        </SidebarProvider>
       </body>
     </html>
   );

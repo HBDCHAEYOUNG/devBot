@@ -2,7 +2,9 @@
 
 import { useGenerateDocument } from "@/features/generate-document/model/useGenerateDocument";
 import type { GenerateDocumentRequest } from "@/types/document.types";
+import { SidebarTrigger } from "@/ui/index";
 import { GeneratorForm } from "@/widgets/GeneratorForm";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function GeneratorPage() {
@@ -19,8 +21,11 @@ export default function GeneratorPage() {
   };
   return (
     <div className="w-full flex flex-col gap-4 items-center h-screen">
-      <header className="p-4 fixed top-0 left-0">
-        <h1>AI 기술 블로그 글 생성기</h1>
+      <header className="p-4 fixed top-0 left-0 common-padding flex items-center gap-2">
+        <SidebarTrigger className="z-50 cursor-pointer" />
+        <Link href="/" className="cursor-pointer text-xl font-light">
+          Devbot
+        </Link>
       </header>
 
       <p className="text-4xl text-center mb-auto mt-auto">
