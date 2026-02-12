@@ -93,12 +93,12 @@ export function DocumentsList() {
           <li
             key={doc.id}
             className={cn(
-              "flex items-center cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md px-2",
+              "flex items-center justify-between cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md px-2 py-1",
               isActive(doc.id) && "bg-blue-50 border-l-4 border-blue-500"
             )}
           >
             <Link
-              className="flex-1 min-w-0 cursor-pointer text-sm font-medium text-gray-800 truncate mb-1"
+              className="flex-1 min-w-0 cursor-pointer text-sm font-medium text-gray-800 truncate"
               href={`/document/${doc.id}`}
             >
               {doc.title}
