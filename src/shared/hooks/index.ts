@@ -1,0 +1,1 @@
+export { useInputModal } from "./useInputModal";

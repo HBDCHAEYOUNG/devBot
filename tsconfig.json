@@ -31,7 +31,8 @@
       "@/styles/*": ["src/shared/styles/*"],
       "@/config/*": ["src/shared/config/*"],
       "@/types/*": ["src/shared/types/*"],
-      "@/icons/*": ["src/shared/icons/*"]
+      "@/icons/*": ["src/shared/icons/*"],
+      "@/hooks/*": ["src/shared/hooks/*"]
     }
   },
   "include": [
