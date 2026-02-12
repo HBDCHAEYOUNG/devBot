@@ -2,8 +2,7 @@
 
 import type { RefObject } from "react";
 import type { GeneratedDocument } from "@/types/document.types";
-import type { DropdownMenuItem } from "@/ui/DropdownMenu";
-import { DropdownMenu } from "@/ui/DropdownMenu";
+import { DropdownMenu, type DropdownMenuItem } from "@/ui/index";
 
 type DocumentItemMenuProps = {
   doc: GeneratedDocument;
