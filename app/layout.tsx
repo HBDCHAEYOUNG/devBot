@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/ui/index";
+import { SidebarProvider } from "@/ui/index";
+import AppHeader from "@/widgets/AppHeader/ui/AppHeader";
 import { AppSidebar } from "@/widgets/AppSidebar";
 
 export const metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <SidebarProvider>
+          <AppHeader />
           <AppSidebar />
           <main className="min-w-0 overflow-hidden">{children}</main>
         </SidebarProvider>
