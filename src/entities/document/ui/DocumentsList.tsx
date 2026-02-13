@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useInputModal } from "@/hooks/useInputModal";
 import { useDropdownMenu } from "@/hooks/useDropdownMenu";
-import { InputModal } from "@/ui/index";
+import { InputModal, useSidebar } from "@/ui/index";
 import { DocumentItemMenu } from "./DocumentItemMenu";
 import PenIcon from "@/icons/pen.svg";
 import TrashIcon from "@/icons/trash.svg";
@@ -18,6 +18,7 @@ export function DocumentsList() {
   const pathname = usePathname();
   const { documents, refresh, delete: deleteDoc, update } = useDocuments();
   const { openMenuId, menuRef, toggle, close } = useDropdownMenu();
+  const { setOpen, setOpenMobile, isMobile } = useSidebar();
   const [editingDoc, setEditingDoc] = useState<GeneratedDocument | null>(null);
 
   const renameModal = useInputModal({
@@ -34,6 +35,11 @@ export function DocumentsList() {
   const handleCloseRename = () => {
     setEditingDoc(null);
     renameModal.close();
+  };
+
+  const handleClose = () => {
+    if (isMobile) setOpenMobile(false);
+    else setOpen(false);
   };
 
   useEffect(() => {
@@ -94,12 +100,13 @@ export function DocumentsList() {
             key={doc.id}
             className={cn(
               "flex items-center justify-between cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md small-padding-x small-padding-x py-1",
-              isActive(doc.id) && "bg-blue-50 border-l-4 border-blue-500"
+              isActive(doc.id) && "bg-gray-200"
             )}
           >
             <Link
               className="flex-1 min-w-0 cursor-pointer text-sm font-medium text-gray-800 truncate"
               href={`/document/${doc.id}`}
+              onClick={handleClose}
             >
               {doc.title}
             </Link>
