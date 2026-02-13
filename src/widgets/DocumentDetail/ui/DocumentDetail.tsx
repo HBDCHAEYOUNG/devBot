@@ -38,7 +38,7 @@ export function DocumentDetail({ id }: DocumentDetailProps) {
   };
 
   return (
-    <div className="flex flex-col gap-10 common-padding-y">
+    <div className="flex flex-col gap-10 common-padding-y common-padding-top">
       <header className="flex flex-col gap-6 common-padding-x ">
         <div className="flex flex-col items-center gap-2">
           <span>{TEMPLATE_LABELS[document.templateType]}</span>

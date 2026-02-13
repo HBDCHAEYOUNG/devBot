@@ -20,7 +20,7 @@ export function AppSidebar() {
   };
   return (
     <Sidebar className="overflow-y-scroll">
-      <SidebarHeader className="common-padding-top fixed top-0 left-0 z-10 bg-sidebar w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
+      <SidebarHeader className="fixed top-0 left-0 z-10 bg-sidebar w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
         <span className="flex items-center gap-2 small-padding-x small-padding-top">
           <Link
             href="/"

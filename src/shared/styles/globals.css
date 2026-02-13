@@ -141,18 +141,20 @@ body {
   .common-padding {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
   .common-padding-x {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
   .common-padding-y {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
-
+  .common-padding-top {
+    padding-top: 5rem;
+  }
   .small-padding {
     padding: 0.75rem;
   }
