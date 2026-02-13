@@ -19,23 +19,29 @@ export function AppSidebar() {
     else setOpen(false);
   };
   return (
-    <Sidebar>
-      <SidebarHeader className="px-3 flex flex-row justify-between">
-        <Link href="/" className="cursor-pointer" onClick={handleClose}>
-          <MainIcon className="size-6 cursor-pointer" />
-        </Link>
-        <CloseIcon className="size-5 cursor-pointer" onClick={handleClose} />
-      </SidebarHeader>
-      <SidebarContent>
+    <Sidebar className="overflow-y-scroll">
+      <SidebarHeader className="common-padding-top fixed top-0 left-0 z-10 bg-sidebar w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
+        <span className="flex items-center gap-2 small-padding-x small-padding-top">
+          <Link
+            href="/"
+            className="cursor-pointer mr-auto"
+            onClick={handleClose}
+          >
+            <MainIcon className="size-6 cursor-pointer" />
+          </Link>
+          <CloseIcon className="size-5 cursor-pointer" onClick={handleClose} />
+        </span>
         <Link
           href="/"
-          className="flex items-center gap-2 cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md p-2 text-sm my-6"
+          className="flex items-center gap-2 cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md small-padding-x py-2 text-sm my-6"
           onClick={handleClose}
         >
           <DocumentIcon className="size-4" />
           새글 작성
         </Link>
-        <h4 className="text-sm text-gray-600 px-2">내 문서</h4>
+        <h4 className="text-sm text-gray-600 small-padding-x">내 문서</h4>
+      </SidebarHeader>
+      <SidebarContent className="px-2 pt-46 w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
         <DocumentsList />
       </SidebarContent>
     </Sidebar>

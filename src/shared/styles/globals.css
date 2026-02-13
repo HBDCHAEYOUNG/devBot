@@ -149,8 +149,19 @@ body {
     padding-right: 1.5rem;
   }
   .common-padding-y {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .small-padding {
+    padding: 0.75rem;
+  }
+  .small-padding-top {
+    padding-top: 0.75rem;
+  }
+  .small-padding-x {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 

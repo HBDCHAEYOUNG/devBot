@@ -68,9 +68,9 @@ export function DocumentsList() {
 
   if (documents.length === 0) {
     return (
-      <div className="p-8 text-center text-gray-400">
-        <p className="mb-2">아직 생성된 문서가 없습니다.</p>
-        <p className="text-sm">새로운 글을 생성해보세요!</p>
+      <div className="text-center text-gray-400 text-sm">
+        <p className="mb-2 ">아직 생성된 문서가 없습니다.</p>
+        <p>새로운 글을 생성해보세요!</p>
       </div>
     );
   }
@@ -88,12 +88,12 @@ export function DocumentsList() {
         onSubmit={renameModal.handleSubmit}
         submitLabel="저장"
       />
-      <ul className="flex-1 overflow-y-auto ">
+      <ul className="flex-1">
         {documents.map((doc) => (
           <li
             key={doc.id}
             className={cn(
-              "flex items-center justify-between cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md px-2 py-1",
+              "flex items-center justify-between cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md small-padding-x small-padding-x py-1",
               isActive(doc.id) && "bg-blue-50 border-l-4 border-blue-500"
             )}
           >
