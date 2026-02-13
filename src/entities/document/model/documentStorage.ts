@@ -38,7 +38,13 @@ export const documentStorage = {
   // Read
   getAll(): GeneratedDocument[] {
     const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    const documents = data ? JSON.parse(data) : [];
+    return data
+      ? documents.sort(
+          (a: GeneratedDocument, b: GeneratedDocument) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+      : [];
   },
 
   getById(id: string): GeneratedDocument | null {
