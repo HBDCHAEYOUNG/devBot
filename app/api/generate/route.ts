@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DOCUMENT_SCHEMA } from "@/config/documentSchema";
+import type { GenerateDocumentResponse } from "@/types/document.types";
 
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
@@ -61,9 +62,39 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-    const content = data.choices[0].message.content;
+    const rawContent = data.choices[0]?.message?.content;
 
-    return NextResponse.json({ content });
+    if (typeof rawContent !== "string") {
+      console.error("OpenAI 응답 형식 오류: content가 문자열이 아님");
+      return NextResponse.json(
+        { error: "AI 응답 형식이 올바르지 않습니다." },
+        { status: 502 }
+      );
+    }
+
+    let document: GenerateDocumentResponse;
+    try {
+      document = JSON.parse(rawContent) as GenerateDocumentResponse;
+    } catch {
+      console.error("OpenAI 응답 JSON 파싱 실패:", rawContent?.slice(0, 200));
+      return NextResponse.json(
+        { error: "AI 응답 형식이 올바르지 않습니다." },
+        { status: 502 }
+      );
+    }
+
+    if (
+      !document.title ||
+      !document.body ||
+      !Array.isArray(document.hashtags)
+    ) {
+      return NextResponse.json(
+        { error: "AI 응답 필드가 올바르지 않습니다." },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json(document);
   } catch (error) {
     console.error("서버 오류:", error);
     return NextResponse.json(
