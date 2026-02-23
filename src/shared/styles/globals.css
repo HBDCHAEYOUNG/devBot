@@ -152,8 +152,9 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
-  .common-padding-top {
+  .large-padding-y {
     padding-top: 5rem;
+    padding-bottom: 5rem;
   }
   .small-padding {
     padding: 0.75rem;

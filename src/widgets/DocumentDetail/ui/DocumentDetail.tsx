@@ -38,8 +38,8 @@ export function DocumentDetail({ id }: DocumentDetailProps) {
   };
 
   return (
-    <div className="flex flex-col gap-10 common-padding-y common-padding-top">
-      <header className="flex flex-col gap-6 common-padding-x ">
+    <div className="flex flex-col gap-6  large-padding-y ">
+      <header className="flex flex-col gap-6 border-b border-border common-padding">
         <div className="flex flex-col items-center gap-2">
           <span>{TEMPLATE_LABELS[document.templateType]}</span>
           <h1 className="text-2xl text-center">{document.title}</h1>

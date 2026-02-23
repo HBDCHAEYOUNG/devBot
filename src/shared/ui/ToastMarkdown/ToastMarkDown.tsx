@@ -24,11 +24,13 @@ export function ToastMarkdown({
   mode,
   value,
   onChange,
-  height = "400px",
+  height,
 }: ToastMarkdownProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const instanceRef = useRef<ToastInstance | null>(null);
   const onChangeRef = useRef(onChange);
+
+  const resolvedHeight = height ?? (mode === "edit" ? "400px" : undefined);
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -50,7 +52,7 @@ export function ToastMarkdown({
         if (cancelled || !containerRef.current) return;
         const editor = new Editor({
           el: containerRef.current,
-          height,
+          height: resolvedHeight,
           initialValue: value,
         });
         editor.on("change", () => {
@@ -64,7 +66,6 @@ export function ToastMarkdown({
         if (cancelled || !containerRef.current) return;
         const viewer = new Viewer({
           el: containerRef.current,
-          height,
           initialValue: value,
         });
         instanceRef.current = viewer as ToastInstance;
@@ -79,7 +80,7 @@ export function ToastMarkdown({
       instanceRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, height]);
+  }, [mode, resolvedHeight]);
 
   useEffect(() => {
     const instance = instanceRef.current;
@@ -87,5 +88,13 @@ export function ToastMarkdown({
     instance.setMarkdown(value);
   }, [value, mode]);
 
-  return <div ref={containerRef} />;
+  return (
+    <div
+      key={mode}
+      ref={containerRef}
+      className={
+        mode === "view" ? "toast-markdown-view-mode w-full" : undefined
+      }
+    />
+  );
 }
