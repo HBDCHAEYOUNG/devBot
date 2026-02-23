@@ -2,7 +2,7 @@
 
 import { useGenerateDocument } from "@/features/generate-document/model/useGenerateDocument";
 import type { GenerateDocumentRequest } from "@/types/document.types";
-import AppHeader from "@/widgets/AppHeader/ui/AppHeader";
+import { LoadingOverlay } from "@/ui/index";
 import { GeneratorForm } from "@/widgets/GeneratorForm";
 import { useRouter } from "next/navigation";
 
@@ -26,8 +26,7 @@ export default function GeneratorPage() {
 
       <GeneratorForm onSubmit={handleGenerate} isLoading={isGenerating} />
 
-      {/* TODO: 진행 상태 표시 UI 추가 */}
-      {progress && <div>{progress}</div>}
+      {isGenerating && <LoadingOverlay message={progress} />}
 
       {error && (
         <div>
