@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-2024-08-06",
+        model: "gpt-5-nano",
         messages: [
           {
             role: "system",
