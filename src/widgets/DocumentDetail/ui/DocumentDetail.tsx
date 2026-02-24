@@ -19,6 +19,7 @@ import TrashIcon from "@/icons/trash.svg";
 import ExportIcon from "@/icons/download.svg";
 import { useDeleteDocument } from "@/entities/document";
 import { SeoSummaryAccordion } from "@/ui/index";
+import { toast } from "sonner";
 
 dayjs.locale("ko");
 
@@ -35,7 +36,18 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
   const onExport = (format: "markdown" | "html") => () => {
     void format;
   };
-  const onCopy = () => {};
+  const onCopy = async () => {
+    try {
+      const hashtagLine =
+        document.hashtags.length > 0
+          ? `\n\n${document.hashtags.join(" ")}`
+          : "";
+      await navigator.clipboard.writeText(`${body}${hashtagLine}`);
+      toast.success("마크다운 형식으로 클립보드에 복사되었습니다  🎉");
+    } catch {
+      toast.error("복사에 실패했습니다 💥");
+    }
+  };
   const onEdit = () => setMode("edit");
   const onSave = () => setMode("view");
   const handleDelete = () => deleteDocument(document.id);
