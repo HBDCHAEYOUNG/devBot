@@ -4,11 +4,21 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import type { GeneratedDocument } from "@/types/document.types";
 import { TEMPLATE_LABELS } from "@/config/constants";
-import { ToastMarkdown } from "@/ui/index";
+import {
+  ToastMarkdown,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DeleteConfirmDialog,
+} from "@/ui/index";
 import { useState } from "react";
 import CopyIcon from "@/icons/copy.svg";
 import PenIcon from "@/icons/pen.svg";
 import TrashIcon from "@/icons/trash.svg";
+import ExportIcon from "@/icons/download.svg";
+import { useDeleteDocument } from "@/entities/document";
+import { SeoSummaryAccordion } from "@/ui/index";
 
 dayjs.locale("ko");
 
@@ -17,13 +27,18 @@ export interface DocumentDetailProps {
 }
 
 export function DocumentDetail({ document }: DocumentDetailProps) {
+  const deleteDocument = useDeleteDocument();
+
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [body, setBody] = useState(document.body);
 
+  const onExport = (format: "markdown" | "html") => () => {
+    void format;
+  };
   const onCopy = () => {};
   const onEdit = () => setMode("edit");
   const onSave = () => setMode("view");
-  const onDelete = () => {};
+  const handleDelete = () => deleteDocument(document.id);
 
   return (
     <div className="flex flex-col gap-6  large-padding-y ">
@@ -40,31 +55,62 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
 
           {mode === "view" ? (
             <>
-              {" "}
-              <button onClick={onCopy}>
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  type="button"
+                  className="cursor-pointer outline-none"
+                  aria-label="내보내기"
+                >
+                  <ExportIcon className="size-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={onExport("markdown")}>
+                    Markdown 다운로드
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={onExport("html")}>
+                    HTML 다운로드
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <button onClick={onCopy} className="cursor-pointer">
                 <CopyIcon className="size-4" />
               </button>
-              <button onClick={onEdit}>
+              <button onClick={onEdit} className="cursor-pointer">
                 <PenIcon className="size-4" />
               </button>
-              <button onClick={onDelete}>
-                <TrashIcon className="size-4" />
-              </button>
+              <DeleteConfirmDialog
+                onConfirm={handleDelete}
+                trigger={
+                  <button
+                    type="button"
+                    aria-label="삭제"
+                    className="cursor-pointer"
+                  >
+                    <TrashIcon className="size-4" />
+                  </button>
+                }
+              />
             </>
           ) : (
             <>
-              <button onClick={onSave}>저장</button>
+              <button
+                onClick={onSave}
+                className="cursor-pointer bg-primary text-white text-sm px-1 rounded-sm"
+              >
+                저장
+              </button>
             </>
           )}
         </nav>
       </header>
 
       <section className="flex flex-col gap-10 common-padding-x">
+        <SeoSummaryAccordion metaDescription={document.metaDescription} />
         <ToastMarkdown mode={mode} value={body} onChange={setBody} />
         <div>
           {document.hashtags.map((tag, i) => (
             <span key={i} className="text-sm text-gray-500">
-              {`#${tag} `}
+              {`${tag} `}
             </span>
           ))}
         </div>
