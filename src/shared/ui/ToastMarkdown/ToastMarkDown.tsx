@@ -92,8 +92,13 @@ export function ToastMarkdown({
 
   useEffect(() => {
     const instance = instanceRef.current;
-    if (!instance?.setMarkdown || mode !== "edit") return;
-    instance.setMarkdown(value);
+    if (!instance?.setMarkdown || !instance?.getMarkdown || mode !== "edit")
+      return;
+
+    const currentMarkdown = instance.getMarkdown();
+    if (currentMarkdown !== value) {
+      instance.setMarkdown(value);
+    }
   }, [value, mode]);
 
   return (
