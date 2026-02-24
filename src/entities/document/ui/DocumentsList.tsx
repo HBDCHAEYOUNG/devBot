@@ -8,15 +8,13 @@ import { DocumentItemMenu } from "./DocumentItemMenu";
 export type DocumentsListProps = {
   documents: GeneratedDocument[];
   activeId: string | null;
-  onRename: (doc: GeneratedDocument, e: React.MouseEvent) => void;
-  onDelete: (id: string, e: React.MouseEvent) => void;
+  onDelete: (id: string) => void;
   onLinkClick?: () => void;
 };
 
 export function DocumentsList({
   documents,
   activeId,
-  onRename,
   onDelete,
   onLinkClick,
 }: DocumentsListProps) {
@@ -47,7 +45,7 @@ export function DocumentsList({
             {doc.title}
           </Link>
 
-          <DocumentItemMenu doc={doc} onRename={onRename} onDelete={onDelete} />
+          <DocumentItemMenu doc={doc} onDelete={onDelete} />
         </li>
       ))}
     </ul>
