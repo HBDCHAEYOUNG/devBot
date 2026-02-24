@@ -4,14 +4,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import type { GeneratedDocument } from "@/types/document.types";
 import { TEMPLATE_LABELS } from "@/config/constants";
-import {
-  ToastMarkdown,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DeleteConfirmDialog,
-} from "@/ui/index";
+import { ToastMarkdown, DeleteConfirmDialog, ActionDropdown } from "@/ui/index";
 import { useState } from "react";
 import CopyIcon from "@/icons/copy.svg";
 import PenIcon from "@/icons/pen.svg";
@@ -20,6 +13,12 @@ import ExportIcon from "@/icons/download.svg";
 import { useDeleteDocument } from "@/entities/document";
 import { SeoSummaryAccordion } from "@/ui/index";
 import { toast } from "sonner";
+import {
+  exportDocumentAsMarkdown,
+  exportDocumentAsHTML,
+  buildMarkdownExportContent,
+  buildHTMLExportContent,
+} from "@/lib/downloadUtils";
 
 dayjs.locale("ko");
 
@@ -33,21 +32,13 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [body, setBody] = useState(document.body);
 
-  const onExport = (format: "markdown" | "html") => () => {
-    void format;
-  };
-  const onCopy = async () => {
-    try {
-      const hashtagLine =
-        document.hashtags.length > 0
-          ? `\n\n${document.hashtags.join(" ")}`
-          : "";
-      await navigator.clipboard.writeText(`${body}${hashtagLine}`);
-      toast.success("마크다운 형식으로 클립보드에 복사되었습니다  🎉");
-    } catch {
-      toast.error("복사에 실패했습니다 💥");
-    }
-  };
+  const getExportPayload = () => ({
+    title: document.title,
+    metaDescription: document.metaDescription,
+    body,
+    hashtags: document.hashtags,
+  });
+
   const onEdit = () => setMode("edit");
   const onSave = () => setMode("view");
   const handleDelete = () => deleteDocument(document.id);
@@ -67,26 +58,65 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
 
           {mode === "view" ? (
             <>
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  type="button"
-                  className="cursor-pointer outline-none"
-                  aria-label="내보내기"
-                >
-                  <ExportIcon className="size-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={onExport("markdown")}>
-                    Markdown 다운로드
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={onExport("html")}>
-                    HTML 다운로드
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <button onClick={onCopy} className="cursor-pointer">
-                <CopyIcon className="size-4" />
-              </button>
+              <ActionDropdown
+                ariaLabel="내보내기"
+                trigger={<ExportIcon className="size-4" />}
+                items={[
+                  {
+                    label: "Markdown 다운로드",
+                    onClick: () => {
+                      const payload = getExportPayload();
+                      exportDocumentAsMarkdown(payload);
+                      toast.success("Markdown 파일로 다운로드되었습니다.");
+                    },
+                  },
+                  {
+                    label: "HTML 다운로드",
+                    onClick: () => {
+                      exportDocumentAsHTML(getExportPayload()).then(() => {
+                        toast.success("HTML 파일로 다운로드되었습니다.");
+                      });
+                    },
+                  },
+                ]}
+              />
+              <ActionDropdown
+                ariaLabel="클립보드에 복사"
+                trigger={<CopyIcon className="size-4" />}
+                items={[
+                  {
+                    label: "Markdown 복사",
+                    onClick: async () => {
+                      try {
+                        await navigator.clipboard.writeText(
+                          buildMarkdownExportContent(getExportPayload())
+                        );
+                        toast.success(
+                          "마크다운 형식으로 클립보드에 복사되었습니다."
+                        );
+                      } catch {
+                        toast.error("복사에 실패했습니다.");
+                      }
+                    },
+                  },
+                  {
+                    label: "HTML 복사",
+                    onClick: async () => {
+                      try {
+                        const html = await buildHTMLExportContent(
+                          getExportPayload()
+                        );
+                        await navigator.clipboard.writeText(html);
+                        toast.success(
+                          "HTML 형식으로 클립보드에 복사되었습니다."
+                        );
+                      } catch {
+                        toast.error("복사에 실패했습니다.");
+                      }
+                    },
+                  },
+                ]}
+              />
               <button onClick={onEdit} className="cursor-pointer">
                 <PenIcon className="size-4" />
               </button>

@@ -1,3 +1,4 @@
+export * from "./ActionDropdown/ActionDropdown";
 export * from "./DeleteConfirmDialog/DeleteConfirmDialog";
 export * from "./LoadingOverlay/LoadingOverlay";
 export * from "./RenameDialog/RenameDialog";
