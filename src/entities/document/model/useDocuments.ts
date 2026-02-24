@@ -42,7 +42,12 @@ export function useDocuments() {
   const update = useCallback(
     (
       id: string,
-      updates: Partial<Pick<GeneratedDocument, "title" | "body" | "hashtags">>
+      updates: Partial<
+        Pick<
+          GeneratedDocument,
+          "title" | "body" | "hashtags" | "metaDescription"
+        >
+      >
     ) => {
       const updated = documentStorage.update(id, updates);
       if (updated) refresh();

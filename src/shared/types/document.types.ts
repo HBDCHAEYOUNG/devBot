@@ -14,6 +14,7 @@ export interface GenerateDocumentResponse {
   title: string;
   body: string;
   hashtags: string[];
+  metaDescription: string;
 }
 
 // 저장소 타입
@@ -22,7 +23,7 @@ export interface GeneratedDocument {
   title: string;
   body: string;
   hashtags: string[];
-  // 생성 메타데이터
+  metaDescription: string;
   templateType: TemplateType;
   topic: string;
   difficulty: Difficulty;

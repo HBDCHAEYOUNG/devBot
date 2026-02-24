@@ -86,6 +86,7 @@ export async function POST(request: NextRequest) {
     if (
       !document.title ||
       !document.body ||
+      !document.metaDescription ||
       !Array.isArray(document.hashtags)
     ) {
       return NextResponse.json(

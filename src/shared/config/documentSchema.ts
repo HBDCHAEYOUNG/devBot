@@ -26,8 +26,14 @@ export const DOCUMENT_SCHEMA = {
         minItems: 3,
         maxItems: 7,
       },
+      metaDescription: {
+        type: "string",
+        description: "SEO 메타 설명 (검색 결과용, 100-160자, 핵심 키워드 포함)",
+        minLength: 120,
+        maxLength: 160,
+      },
     },
-    required: ["title", "body", "hashtags"],
+    required: ["title", "body", "hashtags", "metaDescription"],
     additionalProperties: false,
   },
 } as const;

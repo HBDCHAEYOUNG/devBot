@@ -26,6 +26,7 @@ export const documentStorage = {
       title: apiResponse.title,
       body: apiResponse.body,
       hashtags: apiResponse.hashtags,
+      metaDescription: apiResponse.metaDescription,
       templateType: requestInfo.templateType,
       topic: requestInfo.topic,
       difficulty: requestInfo.difficulty,
@@ -83,7 +84,9 @@ export const documentStorage = {
   // Update
   update(
     id: string,
-    updates: Partial<Pick<GeneratedDocument, "title" | "body" | "hashtags">>
+    updates: Partial<
+      Pick<GeneratedDocument, "title" | "body" | "hashtags" | "metaDescription">
+    >
   ): GeneratedDocument | null {
     const documents = this.getAll();
     const index = documents.findIndex((doc) => doc.id === id);
