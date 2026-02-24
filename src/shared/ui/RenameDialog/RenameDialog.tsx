@@ -16,10 +16,7 @@ export function RenameDialog({ doc, trigger }: RenameDialogProps) {
   const { update } = useDocuments();
 
   const handleSubmit = (newTitle: string) => {
-    const updated = update(doc.id, { title: newTitle });
-    if (updated) {
-      window.dispatchEvent(new Event("documents-updated"));
-    }
+    update(doc.id, { title: newTitle });
   };
 
   return (

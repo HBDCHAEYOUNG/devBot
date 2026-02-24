@@ -50,7 +50,10 @@ export function useDocuments() {
       >
     ) => {
       const updated = documentStorage.update(id, updates);
-      if (updated) refresh();
+      if (updated) {
+        refresh();
+        window.dispatchEvent(new Event("documents-updated"));
+      }
       return updated;
     },
     [refresh]
@@ -59,7 +62,10 @@ export function useDocuments() {
   const deleteDoc = useCallback(
     (id: string) => {
       const success = documentStorage.delete(id);
-      if (success) refresh();
+      if (success) {
+        refresh();
+        window.dispatchEvent(new Event("documents-updated"));
+      }
       return success;
     },
     [refresh]
