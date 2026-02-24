@@ -28,6 +28,7 @@ export function useGenerateDocument() {
 
       setProgress("생성된 글을 저장하고 있습니다...");
       const savedDocument = documentStorage.save(response, request);
+      window.dispatchEvent(new Event("documents-updated"));
 
       setProgress("완료!");
       return savedDocument;
