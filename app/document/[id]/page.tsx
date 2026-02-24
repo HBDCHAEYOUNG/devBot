@@ -1,4 +1,4 @@
-import { DocumentDetail } from "@/widgets/DocumentDetail";
+import { DocumentPageClient } from "./DocumentPageClient";
 
 export default async function DocumentPage({
   params,
@@ -6,5 +6,5 @@ export default async function DocumentPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <DocumentDetail id={id} />;
+  return <DocumentPageClient id={id} />;
 }

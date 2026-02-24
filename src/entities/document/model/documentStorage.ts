@@ -7,6 +7,11 @@ import type {
 
 const STORAGE_KEY = "my-documents";
 
+function getStorage(): Storage | null {
+  if (typeof window === "undefined") return null;
+  return window.localStorage;
+}
+
 export const documentStorage = {
   // Create
   save(
@@ -30,14 +35,16 @@ export const documentStorage = {
     };
 
     documents.push(newDocument);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(documents));
+    getStorage()?.setItem(STORAGE_KEY, JSON.stringify(documents));
 
     return newDocument;
   },
 
   // Read
   getAll(): GeneratedDocument[] {
-    const data = localStorage.getItem(STORAGE_KEY);
+    const storage = getStorage();
+    if (!storage) return [];
+    const data = storage.getItem(STORAGE_KEY);
     const documents = data ? JSON.parse(data) : [];
     return data
       ? documents.sort(
@@ -89,7 +96,7 @@ export const documentStorage = {
       updatedAt: new Date().toISOString(),
     };
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(documents));
+    getStorage()?.setItem(STORAGE_KEY, JSON.stringify(documents));
     return documents[index];
   },
 
@@ -100,7 +107,7 @@ export const documentStorage = {
 
     if (filtered.length === documents.length) return false;
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+    getStorage()?.setItem(STORAGE_KEY, JSON.stringify(filtered));
     return true;
   },
 
@@ -118,6 +125,6 @@ export const documentStorage = {
 
   // Utility
   clear(): void {
-    localStorage.removeItem(STORAGE_KEY);
+    getStorage()?.removeItem(STORAGE_KEY);
   },
 };

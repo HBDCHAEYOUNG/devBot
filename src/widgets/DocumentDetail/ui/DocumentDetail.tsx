@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import type { GeneratedDocument } from "@/types/document.types";
 import { TEMPLATE_LABELS } from "@/config/constants";
-import { useDocuments } from "@/entities/document";
 import { ToastMarkdown } from "@/ui/index";
 import { useState } from "react";
 import CopyIcon from "@/icons/copy.svg";
@@ -13,29 +12,18 @@ import TrashIcon from "@/icons/trash.svg";
 
 dayjs.locale("ko");
 
-interface DocumentDetailProps {
-  id: string;
+export interface DocumentDetailProps {
+  document: GeneratedDocument;
 }
 
-export function DocumentDetail({ id }: DocumentDetailProps) {
-  const { getById } = useDocuments();
-  const document: GeneratedDocument | null = getById(id);
-
+export function DocumentDetail({ document }: DocumentDetailProps) {
   const [mode, setMode] = useState<"view" | "edit">("view");
-  const [body, setBody] = useState(document?.body || "");
+  const [body, setBody] = useState(document.body);
 
   const onCopy = () => {};
-  const onEdit = () => {
-    setMode("edit");
-  };
+  const onEdit = () => setMode("edit");
+  const onSave = () => setMode("view");
   const onDelete = () => {};
-
-  if (!document) {
-    return <div>Document not found</div>;
-  }
-  const onSave = () => {
-    setMode("view");
-  };
 
   return (
     <div className="flex flex-col gap-6  large-padding-y ">
