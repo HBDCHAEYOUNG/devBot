@@ -4,13 +4,18 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import type { GeneratedDocument } from "@/types/document.types";
 import { TEMPLATE_LABELS } from "@/config/constants";
-import { ToastMarkdown, DeleteConfirmDialog, ActionDropdown } from "@/ui/index";
+import {
+  ToastMarkdown,
+  DeleteConfirmDialog,
+  ActionDropdown,
+  Textarea,
+} from "@/ui/index";
 import { useState } from "react";
 import CopyIcon from "@/icons/copy.svg";
 import PenIcon from "@/icons/pen.svg";
 import TrashIcon from "@/icons/trash.svg";
 import ExportIcon from "@/icons/download.svg";
-import { useDeleteDocument } from "@/entities/document";
+import { useDeleteDocument, useDocuments } from "@/entities/document";
 import { SeoSummaryAccordion } from "@/ui/index";
 import { toast } from "sonner";
 import {
@@ -28,36 +33,84 @@ export interface DocumentDetailProps {
 
 export function DocumentDetail({ document }: DocumentDetailProps) {
   const deleteDocument = useDeleteDocument();
+  const { update } = useDocuments();
 
   const [mode, setMode] = useState<"view" | "edit">("view");
+  const [title, setTitle] = useState(document.title);
+  const [metaDescription, setMetaDescription] = useState(
+    document.metaDescription
+  );
   const [body, setBody] = useState(document.body);
 
   const getExportPayload = () => ({
-    title: document.title,
-    metaDescription: document.metaDescription,
-    body,
+    title: mode === "edit" ? title : document.title,
+    metaDescription:
+      mode === "edit" ? metaDescription : document.metaDescription,
+    body: mode === "edit" ? body : document.body,
     hashtags: document.hashtags,
   });
 
-  const onEdit = () => setMode("edit");
-  const onSave = () => setMode("view");
+  const onEdit = () => {
+    setTitle(document.title);
+    setMetaDescription(document.metaDescription);
+    setBody(document.body);
+    setMode("edit");
+  };
+  const onSave = () => {
+    const payload = {
+      title: title ?? document.title,
+      metaDescription: metaDescription ?? document.metaDescription,
+      body: body ?? document.body,
+    };
+    const updated = update(document.id, payload);
+    if (updated) {
+      setMode("view");
+      toast.success("저장되었습니다.");
+    } else {
+      toast.error("저장에 실패했습니다.");
+    }
+  };
   const handleDelete = () => deleteDocument(document.id);
 
   return (
-    <div className="flex flex-col gap-6  large-padding-y ">
-      <header className="flex flex-col gap-6 border-b border-border common-padding">
-        <div className="flex flex-col items-center gap-2">
-          <span>{TEMPLATE_LABELS[document.templateType]}</span>
-          <h1 className="text-2xl text-center">{document.title}</h1>
+    <div className="flex flex-col gap-6 large-padding-y">
+      <header className="flex flex-col border-b border-border common-padding-x common-padding-y">
+        <div className="flex flex-col items-center">
+          {mode === "edit" && (
+            <nav className="flex items-center gap-2 w-full justify-end fixed top-5 z-20 pointer-events-auto right-8">
+              <button
+                onClick={() => setMode("view")}
+                className="cursor-pointer border border-gray-300 text-sm px-1 rounded-xs"
+              >
+                취소
+              </button>
+              <button
+                onClick={onSave}
+                className="cursor-pointer bg-primary text-primary-foreground text-sm px-1 rounded-xs"
+              >
+                저장
+              </button>
+            </nav>
+          )}
+          {mode === "view" && (
+            <span>{TEMPLATE_LABELS[document.templateType]}</span>
+          )}
+          <Textarea
+            value={mode === "edit" ? title : document.title}
+            onChange={(e) => setTitle(e.target.value.replace(/\s+$/, ""))}
+            readOnly={mode === "view"}
+            className="text-2xl! text-center w-full rounded px-2 py-1 bg-background outline-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none"
+            placeholder="제목"
+          />
         </div>
 
         <nav className="flex items-center gap-2 w-full">
-          <time className="text-sm text-gray-500 mr-auto">
-            {dayjs(document.createdAt).format("YYYY년 M월 D일 A h:mm")}
-          </time>
-
-          {mode === "view" ? (
+          {mode === "view" && (
             <>
+              <time className="text-sm text-gray-500 mr-auto">
+                {dayjs(document.createdAt).format("YYYY년 M월 D일 A h:mm")}
+              </time>
+
               <ActionDropdown
                 ariaLabel="내보내기"
                 trigger={<ExportIcon className="size-4" />}
@@ -133,22 +186,23 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
                 }
               />
             </>
-          ) : (
-            <>
-              <button
-                onClick={onSave}
-                className="cursor-pointer bg-primary text-white text-sm px-1 rounded-sm"
-              >
-                저장
-              </button>
-            </>
           )}
         </nav>
       </header>
 
       <section className="flex flex-col gap-10 common-padding-x">
-        <SeoSummaryAccordion metaDescription={document.metaDescription} />
-        <ToastMarkdown mode={mode} value={body} onChange={setBody} />
+        <SeoSummaryAccordion
+          metaDescription={
+            mode === "edit" ? metaDescription : document.metaDescription
+          }
+          mode={mode}
+          onMetaDescriptionChange={setMetaDescription}
+        />
+        <ToastMarkdown
+          mode={mode}
+          value={mode === "edit" ? body : document.body}
+          onChange={setBody}
+        />
         <div>
           {document.hashtags.map((tag, i) => (
             <span key={i} className="text-sm text-gray-500">
