@@ -1,3 +1,8 @@
+declare module "@toast-ui/editor-plugin-code-syntax-highlight" {
+  const codeSyntaxHighlight: (context: unknown) => void;
+  export default codeSyntaxHighlight;
+}
+
 declare module "@toast-ui/editor" {
   interface EditorOptions {
     el: HTMLElement;
@@ -16,10 +21,15 @@ declare module "@toast-ui/editor" {
 }
 
 declare module "@toast-ui/editor/dist/toastui-editor-viewer" {
+  type ToastUIPlugin =
+    | ((context: unknown) => void)
+    | [(context: unknown) => void, { highlighter: unknown }];
+
   interface ViewerOptions {
     el: HTMLElement;
     height?: string;
     initialValue?: string;
+    plugins?: ToastUIPlugin[];
   }
 
   export default class Viewer {

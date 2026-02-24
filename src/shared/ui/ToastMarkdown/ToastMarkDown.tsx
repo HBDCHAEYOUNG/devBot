@@ -3,6 +3,9 @@
 import { useEffect, useRef } from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import "prismjs/themes/prism-tomorrow.css";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+import Prism from "prismjs";
 
 type ToastMode = "view" | "edit";
 
@@ -63,10 +66,15 @@ export function ToastMarkdown({
         const { default: Viewer } = await import(
           "@toast-ui/editor/dist/toastui-editor-viewer"
         );
+        const { default: codeSyntaxHighlight } = await import(
+          "@toast-ui/editor-plugin-code-syntax-highlight"
+        );
+
         if (cancelled || !containerRef.current) return;
         const viewer = new Viewer({
           el: containerRef.current,
           initialValue: value,
+          plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
         });
         instanceRef.current = viewer as ToastInstance;
       }
