@@ -43,9 +43,11 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
   const [body, setBody] = useState(document.body);
 
   const getExportPayload = () => ({
-    title: mode === "edit" ? title : document.title,
-    metaDescription:
-      mode === "edit" ? metaDescription : document.metaDescription,
+    title: (mode === "edit" ? title : document.title).trim(),
+    metaDescription: (mode === "edit"
+      ? metaDescription
+      : document.metaDescription
+    ).trim(),
     body: mode === "edit" ? body : document.body,
     hashtags: document.hashtags,
   });
@@ -58,8 +60,8 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
   };
   const onSave = () => {
     const payload = {
-      title: title ?? document.title,
-      metaDescription: metaDescription ?? document.metaDescription,
+      title: (title ?? document.title).trim(),
+      metaDescription: (metaDescription ?? document.metaDescription).trim(),
       body: body ?? document.body,
     };
     const updated = update(document.id, payload);
@@ -97,7 +99,7 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
           )}
           <Textarea
             value={mode === "edit" ? title : document.title}
-            onChange={(e) => setTitle(e.target.value.replace(/\s+$/, ""))}
+            onChange={(e) => setTitle(e.target.value)}
             readOnly={mode === "view"}
             className="text-2xl! text-center w-full rounded bg-background outline-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none"
             placeholder="제목"
