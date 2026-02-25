@@ -33,7 +33,7 @@ export function DocumentsList({
         <li
           key={doc.id}
           className={cn(
-            "flex items-center justify-between cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md small-padding-x small-padding-x py-1",
+            "group/list-item flex items-center justify-between cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md pl-2 pr-1 py-1 gap-3",
             activeId === doc.id && "bg-gray-200"
           )}
         >

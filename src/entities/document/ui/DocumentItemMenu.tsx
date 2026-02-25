@@ -23,11 +23,11 @@ export function DocumentItemMenu({ doc, onDelete }: DocumentItemMenuProps) {
     <DropdownMenu>
       <DropdownMenuTrigger
         type="button"
-        className="group p-1 cursor-pointer"
+        className="pr-1 cursor-pointer"
         aria-label="메뉴 열기"
         onClick={(e) => e.stopPropagation()}
       >
-        <MenuDotsIcon className="size-4 invisible group-hover:visible cursor-pointer" />
+        <MenuDotsIcon className="size-4 invisible group-hover/list-item:visible cursor-pointer" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <RenameDialog
