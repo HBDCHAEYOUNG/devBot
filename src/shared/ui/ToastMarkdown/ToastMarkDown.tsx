@@ -6,6 +6,7 @@ import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import "prismjs/themes/prism-tomorrow.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import Prism from "prismjs";
+import { cn } from "@/lib/utils";
 
 type ToastMode = "view" | "edit";
 
@@ -105,9 +106,10 @@ export function ToastMarkdown({
     <div
       key={mode}
       ref={containerRef}
-      className={
-        mode === "view" ? "toast-markdown-view-mode w-full" : undefined
-      }
+      className={cn(
+        "w-full",
+        mode === "view" ? "toast-markdown-view-mode" : undefined
+      )}
     />
   );
 }

@@ -22,7 +22,7 @@ export default function RootLayout({
         <SidebarProvider>
           <AppHeader />
           <AppSidebar />
-          <main className="min-w-0 overflow-hidden">{children}</main>
+          <main className="min-w-0 overflow-hidden flex-1">{children}</main>
         </SidebarProvider>
       </body>
     </html>
