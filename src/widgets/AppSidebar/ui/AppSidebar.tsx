@@ -25,10 +25,12 @@ export function AppSidebar() {
   const deleteDocument = useDeleteDocument();
 
   useEffect(() => {
+    if (!isMobile) setOpen(true);
+
     const handleUpdate = () => refresh();
     window.addEventListener("documents-updated", handleUpdate);
     return () => window.removeEventListener("documents-updated", handleUpdate);
-  }, [refresh]);
+  }, [refresh, isMobile]);
 
   const handleClose = () => {
     if (isMobile) setOpenMobile(false);
@@ -42,7 +44,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="overflow-y-scroll">
-      <SidebarHeader className="fixed top-0 left-0 z-10 bg-sidebar w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
+      <SidebarHeader>
         <span className="flex items-center gap-2 small-padding-x small-padding-top">
           <Link
             href="/"
@@ -63,7 +65,7 @@ export function AppSidebar() {
         </Link>
         <h4 className="text-sm text-gray-600 small-padding-x">내 문서</h4>
       </SidebarHeader>
-      <SidebarContent className="px-2 pt-46 w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
+      <SidebarContent className="px-2 w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
         <DocumentsList
           documents={documents}
           activeId={activeId}
