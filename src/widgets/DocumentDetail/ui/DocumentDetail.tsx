@@ -73,11 +73,11 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
   const handleDelete = () => deleteDocument(document.id);
 
   return (
-    <div className="flex flex-col gap-6 large-padding-y">
-      <header className="flex flex-col border-b border-border common-padding-x common-padding-y">
-        <div className="flex flex-col items-center">
+    <div className="flex flex-col large-padding-y">
+      <header className="flex flex-col common-padding-x common-padding-y max-w-4xl mx-auto w-full">
+        <div className="flex flex-col items-center max-w-4xl mx-auto">
           {mode === "edit" && (
-            <nav className="flex items-center gap-2 w-full justify-end fixed top-5 z-20 pointer-events-auto right-8">
+            <nav className="flex items-center gap-2 w-fit justify-end fixed top-5 z-20 pointer-events-auto right-8">
               <button
                 onClick={() => setMode("view")}
                 className="cursor-pointer border border-gray-300 text-sm px-1 rounded-xs"
@@ -99,15 +99,15 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
             value={mode === "edit" ? title : document.title}
             onChange={(e) => setTitle(e.target.value.replace(/\s+$/, ""))}
             readOnly={mode === "view"}
-            className="text-2xl! text-center w-full rounded px-2 py-1 bg-background outline-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none"
+            className="text-2xl! text-center w-full rounded bg-background outline-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none"
             placeholder="제목"
           />
         </div>
 
-        <nav className="flex items-center gap-2 w-full">
+        <nav className="flex items-center gap-2 w-full max-w-4xl mx-auto">
           {mode === "view" && (
             <>
-              <time className="text-sm text-gray-500 mr-auto">
+              <time className="pt-6 text-sm text-gray-500 mr-auto">
                 {dayjs(document.createdAt).format("YYYY년 M월 D일 A h:mm")}
               </time>
 
@@ -190,7 +190,9 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
         </nav>
       </header>
 
-      <section className="flex flex-col gap-10 common-padding-x">
+      <hr />
+
+      <section className="flex flex-col gap-10 common-padding-x max-w-4xl common-padding-y w-full mx-auto">
         <SeoSummaryAccordion
           metaDescription={
             mode === "edit" ? metaDescription : document.metaDescription
@@ -206,7 +208,7 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
         <div>
           {document.hashtags.map((tag, i) => (
             <span key={i} className="text-sm text-gray-500">
-              {`${tag} `}
+              {`#${tag} `}
             </span>
           ))}
         </div>
