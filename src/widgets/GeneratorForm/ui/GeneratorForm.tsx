@@ -117,7 +117,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           placeholder="React useState 훅 사용법"
           required
           disabled={isLoading}
-          className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded-2xl text-xl pt-4"
+          className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded-2xl text-xl! pt-4"
         />
         <button
           type="submit"
