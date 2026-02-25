@@ -1,5 +1,21 @@
 import type { Difficulty, Length } from "@/types/document.types";
 
+/** 모든 블로그 글에 공통 적용되는 전문 작성 규칙 및 구조 (API 생성 품질 향상) */
+const BLOG_WRITING_RULES = `
+[글 작성 규칙 (필수 준수)]
+1. 서론에서 독자의 관심을 끌어야 합니다 — 훅(hook) 문장, 공통 고민/질문, 또는 구체적 시나리오로 시작하세요.
+2. 본문에는 반드시 코드 예시를 포함합니다 — 설명만 있는 섹션은 피하고, 실행 가능하거나 이해하기 쉬운 코드를 넣으세요.
+3. 코드 블록은 적절한 언어 태그를 붙입니다 (예: \`\`\`javascript, \`\`\`typescript, \`\`\`bash).
+4. 전문 용어는 쉽게 풀어서 설명합니다 — 처음 등장 시 한 줄 정의나 비유를 넣고, 독자 수준에 맞게 조절하세요.
+5. 결론에서 핵심 내용을 요약합니다 — 3~5개 불릿으로 정리하고, 다음에 읽을 만한 주제나 실습 방향을 제시하세요.
+
+[글 구조 (전체 흐름)]
+1. 제목: SEO에 최적화된 매력적인 제목 (키워드 포함, 클릭 유도)
+2. 서론: 주제 소개 및 학습 동기 (2-3문단)
+3. 본문: 핵심 내용 설명, 코드 예시 포함 (3-5섹션)
+4. 결론: 요약 및 추가 학습 방향
+`;
+
 const getDifficultyDescription = (difficulty: Difficulty): string => {
   const descriptions = {
     beginner: "입문자 대상 (기본 개념 상세 설명 필요)",
@@ -20,6 +36,8 @@ const getLengthDescription = (length: Length): string => {
 
 export const DOCUMENT_PROMPTS = {
   tutorial: (topic: string, difficulty: Difficulty, length: Length) => `
+${BLOG_WRITING_RULES}
+
 당신은 개발자를 위한 기술 블로그 작성 전문가입니다.
 다음 조건에 맞는 **튜토리얼** 형식의 블로그 글을 작성해주세요.
 
@@ -68,7 +86,7 @@ ${difficulty === "beginner" ? "- 전문 용어 사용 시 반드시 설명 추�
 **SEO 메타 설명 (metaDescription):**
 - 검색 결과용 요약 문장 (100-160자). 반드시 일반 문장 형태로만 작성.
 - 핵심 키워드(기술명, 주제)를 문장 안에 자연스럽게 녹여서 넣기. 예: "React와 TypeScript로 ~하는 방법을 단계별로 소개합니다."
-- #해시태그 형식(#React, #TypeScript 등)은 사용하지 말 것. metaDescription에는 해시 기호(#)를 넣지 않는다.
+- #해시태그 형식(#React, #TypeScript 등)은 사용하지 말 것! metaDescription에는 해시 기호(#)를 넣지 않는다.
 
 **해시태그:**
 - 주제와 직접 관련된 기술 스택, 개념 위주
@@ -77,6 +95,8 @@ ${difficulty === "beginner" ? "- 전문 용어 사용 시 반드시 설명 추�
 `,
 
   til: (topic: string, difficulty: Difficulty, length: Length) => `
+${BLOG_WRITING_RULES}
+
 당신은 개발자를 위한 기술 블로그 작성 전문가입니다.
 다음 조건에 맞는 **TIL(Today I Learned)** 형식의 블로그 글을 작성해주세요.
 
@@ -131,6 +151,8 @@ ${difficulty === "beginner" ? "- 전문 용어 사용 시 반드시 설명 추�
 `,
 
   troubleshooting: (topic: string, difficulty: Difficulty, length: Length) => `
+${BLOG_WRITING_RULES}
+
 당신은 개발자를 위한 기술 블로그 작성 전문가입니다.
 다음 조건에 맞는 **트러블슈팅** 형식의 블로그 글을 작성해주세요.
 

@@ -37,7 +37,13 @@ export async function POST(request: NextRequest) {
         messages: [
           {
             role: "system",
-            content: "당신은 개발자를 위한 기술 블로그 작성 전문가입니다.",
+            content: `당신은 기술 블로그 전문 작가입니다. 사용자가 제공한 주제와 키워드를 바탕으로 기술 블로그 글을 작성합니다.
+
+글 작성 시 반드시 지킬 것:
+- 본문에 코드 예시를 포함하며, 코드예시는 실행가능하며 간결하게 핵심만 작성합니다. 코드 블록에는 언어 태그(예: javascript, typescript)를 붙입니다.
+- 전문 용어는 쉽게 풀어 설명하고, 결론에서 핵심을 요약합니다.
+- 제목은 SEO에 최적화된 매력적인 문장으로, 서론·본문(3-5섹션)·결론 구조를 유지합니다.
+- 요청된 JSON 스키마(title, body, hashtags, metaDescription)에 맞춰 정확히 응답합니다.`,
           },
           {
             role: "user",
