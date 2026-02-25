@@ -45,7 +45,7 @@ export function AppSidebar() {
   return (
     <Sidebar className="overflow-y-scroll">
       <SidebarHeader>
-        <span className="flex items-center gap-2 small-padding-x small-padding-top">
+        <span className="flex items-center gap-2 pr-1 pl-2 small-padding-top">
           <Link
             href="/"
             className="cursor-pointer mr-auto"
@@ -57,7 +57,7 @@ export function AppSidebar() {
         </span>
         <Link
           href="/"
-          className="flex items-center gap-2 cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md small-padding-x py-2 text-sm my-6"
+          className="flex items-center gap-2 cursor-pointer transition-colors relative hover:bg-gray-200 rounded-md small-padding-x py-1 text-sm my-6"
           onClick={handleClose}
         >
           <DocumentIcon className="size-4" />
@@ -65,7 +65,7 @@ export function AppSidebar() {
         </Link>
         <h4 className="text-sm text-gray-600 small-padding-x">내 문서</h4>
       </SidebarHeader>
-      <SidebarContent className="px-2 w-[calc(var(--sidebar-width)-18px)] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)-16px)]">
+      <SidebarContent className="px-2">
         <DocumentsList
           documents={documents}
           activeId={activeId}
