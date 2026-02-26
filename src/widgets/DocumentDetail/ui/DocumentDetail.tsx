@@ -106,90 +106,86 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
           />
         </div>
 
-        <nav className="flex items-center gap-2 w-full max-w-4xl mx-auto">
-          {mode === "view" && (
-            <>
-              <time className="pt-6 text-sm text-gray-500 mr-auto">
-                {dayjs(document.createdAt).format("YYYY년 M월 D일 A h:mm")}
-              </time>
+        {mode === "view" && (
+          <nav className="flex items-center pt-6 gap-2 w-full max-w-4xl mx-auto ">
+            <time className="text-sm text-gray-500 mr-auto">
+              {dayjs(document.createdAt).format("YYYY년 M월 D일 A h:mm")}
+            </time>
 
-              <ActionDropdown
-                ariaLabel="내보내기"
-                trigger={<ExportIcon className="size-4" />}
-                items={[
-                  {
-                    label: "Markdown 다운로드",
-                    onClick: () => {
-                      const payload = getExportPayload();
-                      exportDocumentAsMarkdown(payload);
-                      toast.success("Markdown 파일로 다운로드되었습니다.");
-                    },
+            <ActionDropdown
+              ariaLabel="내보내기"
+              trigger={<ExportIcon className="size-4" />}
+              items={[
+                {
+                  label: "Markdown 다운로드",
+                  onClick: () => {
+                    const payload = getExportPayload();
+                    exportDocumentAsMarkdown(payload);
+                    toast.success("Markdown 파일로 다운로드되었습니다.");
                   },
-                  {
-                    label: "HTML 다운로드",
-                    onClick: () => {
-                      exportDocumentAsHTML(getExportPayload()).then(() => {
-                        toast.success("HTML 파일로 다운로드되었습니다.");
-                      });
-                    },
+                },
+                {
+                  label: "HTML 다운로드",
+                  onClick: () => {
+                    exportDocumentAsHTML(getExportPayload()).then(() => {
+                      toast.success("HTML 파일로 다운로드되었습니다.");
+                    });
                   },
-                ]}
-              />
-              <ActionDropdown
-                ariaLabel="클립보드에 복사"
-                trigger={<CopyIcon className="size-4" />}
-                items={[
-                  {
-                    label: "Markdown 복사",
-                    onClick: async () => {
-                      try {
-                        await navigator.clipboard.writeText(
-                          buildMarkdownExportContent(getExportPayload())
-                        );
-                        toast.success(
-                          "마크다운 형식으로 클립보드에 복사되었습니다."
-                        );
-                      } catch {
-                        toast.error("복사에 실패했습니다.");
-                      }
-                    },
+                },
+              ]}
+            />
+            <ActionDropdown
+              ariaLabel="클립보드에 복사"
+              trigger={<CopyIcon className="size-4" />}
+              items={[
+                {
+                  label: "Markdown 복사",
+                  onClick: async () => {
+                    try {
+                      await navigator.clipboard.writeText(
+                        buildMarkdownExportContent(getExportPayload())
+                      );
+                      toast.success(
+                        "마크다운 형식으로 클립보드에 복사되었습니다."
+                      );
+                    } catch {
+                      toast.error("복사에 실패했습니다.");
+                    }
                   },
-                  {
-                    label: "HTML 복사",
-                    onClick: async () => {
-                      try {
-                        const html = await buildHTMLExportContent(
-                          getExportPayload()
-                        );
-                        await navigator.clipboard.writeText(html);
-                        toast.success(
-                          "HTML 형식으로 클립보드에 복사되었습니다."
-                        );
-                      } catch {
-                        toast.error("복사에 실패했습니다.");
-                      }
-                    },
+                },
+                {
+                  label: "HTML 복사",
+                  onClick: async () => {
+                    try {
+                      const html = await buildHTMLExportContent(
+                        getExportPayload()
+                      );
+                      await navigator.clipboard.writeText(html);
+                      toast.success("HTML 형식으로 클립보드에 복사되었습니다.");
+                    } catch {
+                      toast.error("복사에 실패했습니다.");
+                    }
                   },
-                ]}
-              />
-              <button onClick={onEdit} className="cursor-pointer">
-                <PenIcon className="size-4" />
-              </button>
-              <DeleteConfirmDialog
-                onConfirm={handleDelete}
-                trigger={
-                  <button
-                    type="button"
-                    aria-label="삭제"
-                    className="cursor-pointer"
-                  >
-                    <TrashIcon className="size-4" />
-                  </button>
-                }
-              />
-            </>
-          )}
-        </nav>
+                },
+              ]}
+            />
+            <button onClick={onEdit} className="cursor-pointer">
+              <PenIcon className="size-4" />
+            </button>
+            <DeleteConfirmDialog
+              onConfirm={handleDelete}
+              trigger={
+                <button
+                  type="button"
+                  aria-label="삭제"
+                  className="cursor-pointer"
+                >
+                  <TrashIcon className="size-4" />
+                </button>
+              }
+            />
+          </nav>
+        )}
       </header>
 
       <hr />
