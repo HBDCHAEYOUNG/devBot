@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type {
   GenerateDocumentRequest,
   TemplateType,
@@ -24,6 +24,10 @@ import {
 import ArrowUpIcon from "@/icons/arrow-up.svg";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import {
+  settingsStorage,
+  SETTINGS_SAVED_EVENT,
+} from "@/features/generator-settings";
 
 interface GeneratorFormProps {
   onSubmit: (request: GenerateDocumentRequest) => void;
@@ -36,6 +40,27 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
   const [difficulty, setDifficulty] = useState<Difficulty | "">("");
   const [length, setLength] = useState<Length | "">("");
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
+
+  useEffect(() => {
+    const s = settingsStorage.get();
+    const id = setTimeout(() => {
+      if (s.templateType) setTemplateType(s.templateType);
+      if (s.difficulty) setDifficulty(s.difficulty);
+      if (s.length) setLength(s.length);
+    }, 0);
+    return () => clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    const applyDefaults = () => {
+      const s = settingsStorage.get();
+      setTemplateType(s.templateType ?? "");
+      setDifficulty(s.difficulty ?? "");
+      setLength(s.length ?? "");
+    };
+    window.addEventListener(SETTINGS_SAVED_EVENT, applyDefaults);
+    return () => window.removeEventListener(SETTINGS_SAVED_EVENT, applyDefaults);
+  }, []);
 
   const isFormValid = topic.trim() && templateType && difficulty && length;
 
