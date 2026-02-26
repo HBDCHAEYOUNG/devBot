@@ -1,6 +1,6 @@
 export const TEMPLATE_LABELS = {
   tutorial: "튜토리얼",
-  til: "TIL",
+  til: "TIL (Today I Learned)",
   troubleshooting: "트러블슈팅",
 } as const;
 
