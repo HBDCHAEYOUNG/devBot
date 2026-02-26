@@ -49,7 +49,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="fixed bottom-0 left-0 flex flex-col gap-4 items-center w-full common-padding"
+      className="flex flex-col gap-4 items-center w-full common-padding bg-white"
     >
       <div className="flex gap-2 w-full">
         <Select
@@ -57,7 +57,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           onValueChange={(value) => setTemplateType(value as TemplateType)}
           disabled={isLoading}
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="max-w-[200px] flex-1">
             <SelectValue placeholder="템플릿 유형" />
           </SelectTrigger>
           <SelectContent>
@@ -114,6 +114,12 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           id="textarea-message"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              e.currentTarget.form?.requestSubmit();
+            }
+          }}
           placeholder="React useState 훅 사용법"
           required
           disabled={isLoading}
