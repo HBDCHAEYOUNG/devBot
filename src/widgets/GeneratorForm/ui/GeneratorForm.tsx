@@ -23,6 +23,7 @@ import {
 } from "@/ui/index";
 import ArrowUpIcon from "@/icons/arrow-up.svg";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface GeneratorFormProps {
   onSubmit: (request: GenerateDocumentRequest) => void;
@@ -31,18 +32,30 @@ interface GeneratorFormProps {
 
 export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
   const [topic, setTopic] = useState("");
-  const [templateType, setTemplateType] = useState<TemplateType>("tutorial");
-  const [difficulty, setDifficulty] = useState<Difficulty>("intermediate");
-  const [length, setLength] = useState<Length>("medium");
+  const [templateType, setTemplateType] = useState<TemplateType | "">("");
+  const [difficulty, setDifficulty] = useState<Difficulty | "">("");
+  const [length, setLength] = useState<Length | "">("");
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
+
+  const isFormValid = topic.trim() && templateType && difficulty && length;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isFormValid) {
+      const missing: string[] = [];
+      if (!topic.trim()) missing.push("주제");
+      if (!templateType) missing.push("템플릿 유형");
+      if (!difficulty) missing.push("난이도");
+      if (!length) missing.push("분량");
+      toast.error(`${missing.join(", ")}을(를) 입력해 주세요.`);
+      return;
+    }
 
     onSubmit({
       topic,
-      templateType,
-      difficulty,
-      length,
+      templateType: templateType as TemplateType,
+      difficulty: difficulty as Difficulty,
+      length: length as Length,
     });
   };
 
@@ -76,7 +89,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           onValueChange={(value) => setDifficulty(value as Difficulty)}
           disabled={isLoading}
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-22">
             <SelectValue placeholder="난이도" />
           </SelectTrigger>
           <SelectContent>
@@ -95,7 +108,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           onValueChange={(value) => setLength(value as Length)}
           disabled={isLoading}
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-22">
             <SelectValue placeholder="분량" />
           </SelectTrigger>
           <SelectContent>
@@ -114,13 +127,15 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           id="textarea-message"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
+          onFocus={() => setIsTextareaFocused(true)}
+          onBlur={() => setIsTextareaFocused(false)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
               e.currentTarget.form?.requestSubmit();
             }
           }}
-          placeholder="React useState 훅 사용법"
+          placeholder={isTextareaFocused ? "" : "React useState 훅 사용법"}
           required
           disabled={isLoading}
           className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded-2xl text-xl! pt-4"
@@ -129,8 +144,8 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           type="submit"
           disabled={isLoading}
           className={cn(
-            "w-10 h-10 rounded-full flex items-center justify-center absolute right-4 bottom-3",
-            isLoading ? "bg-gray-500" : "bg-black"
+            "w-10 h-10 rounded-full flex items-center justify-center absolute right-4 bottom-3 cursor-pointer",
+            isLoading || !isFormValid ? "bg-gray-500" : "bg-black"
           )}
         >
           <ArrowUpIcon className="w-6 h-6 text-white" />
