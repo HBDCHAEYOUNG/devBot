@@ -49,7 +49,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 items-center w-full common-padding"
+      className="fixed bottom-0 left-0 flex flex-col gap-4 items-center w-full common-padding"
     >
       <div className="flex gap-2 w-full">
         <Select
