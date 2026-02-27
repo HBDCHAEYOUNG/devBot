@@ -10,6 +10,7 @@ import {
   ActionDropdown,
   Textarea,
 } from "@/ui/index";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import CopyIcon from "@/icons/copy.svg";
 import PenIcon from "@/icons/pen.svg";
@@ -27,6 +28,12 @@ import {
 
 dayjs.locale("ko");
 
+/** 본문 텍스트에서 #단어 형태를 추출해 해시태그 배열로 반환 */
+function parseHashtagsFromBody(text: string): string[] {
+  const matches = text.match(/#(\w+)/g);
+  return matches ? [...new Set(matches.map((s) => s.slice(1)))] : [];
+}
+
 export interface DocumentDetailProps {
   document: GeneratedDocument;
 }
@@ -34,6 +41,7 @@ export interface DocumentDetailProps {
 export function DocumentDetail({ document }: DocumentDetailProps) {
   const deleteDocument = useDeleteDocument();
   const { update } = useDocuments();
+  const isMobile = useIsMobile();
 
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [title, setTitle] = useState(document.title);
@@ -42,6 +50,13 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
   );
   const [body, setBody] = useState(document.body);
 
+  /** 본문 + 해시태그를 한 문자열로 (보기/편집용). 저장 후 body에 해시태그가 있으면 붙이지 않음 */
+  const getBodyWithHashtags = () =>
+    document.hashtags.length > 0 &&
+    document.hashtags.some((t) => !document.body.includes("#" + t))
+      ? document.body + "\n\n" + document.hashtags.map((t) => "#" + t).join(" ")
+      : document.body;
+
   const getExportPayload = () => ({
     title: (mode === "edit" ? title : document.title).trim(),
     metaDescription: (mode === "edit"
@@ -49,20 +64,22 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
       : document.metaDescription
     ).trim(),
     body: mode === "edit" ? body : document.body,
-    hashtags: document.hashtags,
+    hashtags: mode === "edit" ? parseHashtagsFromBody(body) : document.hashtags,
   });
 
   const onEdit = () => {
     setTitle(document.title);
     setMetaDescription(document.metaDescription);
-    setBody(document.body);
+    setBody(getBodyWithHashtags());
     setMode("edit");
   };
   const onSave = () => {
+    const fullBody = body ?? document.body;
     const payload = {
       title: (title ?? document.title).trim(),
       metaDescription: (metaDescription ?? document.metaDescription).trim(),
-      body: body ?? document.body,
+      body: fullBody,
+      hashtags: parseHashtagsFromBody(fullBody),
     };
     const updated = update(document.id, payload);
     if (updated) {
@@ -200,16 +217,10 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
         />
         <ToastMarkdown
           mode={mode}
-          value={mode === "edit" ? body : document.body}
+          value={mode === "edit" ? body : getBodyWithHashtags()}
           onChange={setBody}
+          previewStyle={isMobile ? "tab" : "vertical"}
         />
-        <div>
-          {document.hashtags.map((tag, i) => (
-            <span key={i} className="text-sm text-gray-500">
-              {`#${tag} `}
-            </span>
-          ))}
-        </div>
       </section>
     </div>
   );

@@ -10,11 +10,16 @@ import { cn } from "@/lib/utils";
 
 type ToastMode = "view" | "edit";
 
+/** edit 모드에서만 사용. 'vertical'이면 Write/Preview 탭 없이 세로 분할(좁은 화면용) */
+export type ToastPreviewStyle = "tab" | "vertical";
+
 interface ToastMarkdownProps {
   mode: ToastMode;
   value: string;
   onChange: (markdown: string) => void;
   height?: string;
+  /** edit 모드일 때 미리보기 스타일. 미지정 시 "tab" */
+  previewStyle?: ToastPreviewStyle;
 }
 
 type ToastInstance = {
@@ -29,6 +34,7 @@ export function ToastMarkdown({
   value,
   onChange,
   height,
+  previewStyle: previewStyleProp = "tab",
 }: ToastMarkdownProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const instanceRef = useRef<ToastInstance | null>(null);
@@ -61,7 +67,7 @@ export function ToastMarkdown({
           initialEditType: "markdown",
           hideModeSwitch: true,
           toolbarItems: [],
-          previewStyle: "vertical",
+          previewStyle: previewStyleProp,
         });
         editor.on("change", () => {
           onChangeRef.current(editor.getMarkdown());
@@ -93,7 +99,7 @@ export function ToastMarkdown({
       instanceRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, resolvedHeight]);
+  }, [mode, resolvedHeight, previewStyleProp]);
 
   useEffect(() => {
     const instance = instanceRef.current;
