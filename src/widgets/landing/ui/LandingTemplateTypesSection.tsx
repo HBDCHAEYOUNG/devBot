@@ -1,8 +1,14 @@
 "use client";
 
-import { Badge, Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/index";
+import {
+  Badge,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  ToastMarkdown,
+} from "@/ui/index";
 import { BookOpen, Lightbulb, Bug } from "lucide-react";
-import BugIcon from "@/icons/bug.svg";
 
 const templates = [
   {
@@ -37,22 +43,21 @@ function Counter() {
     badge: null,
     title: "TIL: TypeScript의 satisfies 연산자",
     intro:
-      "오늘 TypeScript 4.9에서 도입된 satisfies 연산자에 대해 학습했습니다. 타입 안정성을 유지하면서도 추론된 타입을 보존할 수 있는 유용한 기능입니다.",
-    code: `type Colors = "red" | "green" | "blue";
-type RGB = [number, number, number];
+      "오늘 TypeScript의 satisfies 연산자를 처음 사용해 봤습니다. 객체 타입을 미리 정해 두고, 실제 값이 그 타입을 만족하는지만 검사할 수 있어 편했습니다.",
+    code: `type Status = "success" | "error";
+type StatusConfig = {
+  label: string;
+  color: string;
+};
 
-const palette = {
-  red: [255, 0, 0],
-  green: "#00ff00",
-  blue: [0, 0, 255],
-} satisfies Record<Colors, string | RGB>;
+const statusConfig = {
+  success: { label: "성공", color: "green" },
+  error: { label: "실패", color: "red" },
+} satisfies Record<Status, StatusConfig>;
 
-// palette.red는 RGB로 추론됨
-const redValue = palette.red[0]; // OK!
-// palette.green은 string으로 추론됨
-const greenUpper = palette.green.toUpperCase(); // OK!`,
+// statusConfig.success는 StatusConfig로 안전하게 추론됨`,
     conclusion:
-      "satisfies는 as const와 함께 사용하면 더 강력한 타입 안정성을 확보할 수 있습니다. 특히 설정 객체나 테마 정의에 유용합니다.",
+      "앞으로 설정 객체나 라우트 맵을 정의할 때 satisfies를 함께 써서 타입을 더 안전하게 관리해 보려고 합니다.",
   },
   {
     id: "troubleshooting",
@@ -127,7 +132,7 @@ export function LandingTemplateTypesSection() {
                     <t.icon className="size-5 text-primary" />
                     <h3 className="font-semibold text-primary">{t.title}</h3>
                     {t.badge && (
-                      <Badge className="bg-gradient-primary text-primary-foreground border-primary/20 text-xs">
+                      <Badge className="bg-primary text-gradient-primary border-primary/20 text-xs">
                         {t.badge}
                       </Badge>
                     )}
@@ -135,37 +140,35 @@ export function LandingTemplateTypesSection() {
 
                   <div className="grid lg:grid-cols-2">
                     {/* Left: Article preview */}
-                    <div className="border-b border-border/60 p-6 lg:border-b-0 lg:border-r">
-                      <div className="space-y-4">
-                        <div>
-                          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gradient-primary">
-                            {"서론"}
-                          </p>
-                          <p className="text-sm leading-relaxed text-muted-foreground">
-                            {t.intro}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gradient-primary">
-                            {"결론"}
-                          </p>
-                          <p className="text-sm leading-relaxed text-muted-foreground">
-                            {t.conclusion}
-                          </p>
-                        </div>
+                    <div className="flex flex-col gap-4 border-b border-border/60 p-6 lg:border-b-0 lg:border-r">
+                      <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gradient-primary">
+                          {"서론"}
+                        </p>
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          {t.intro}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gradient-primary">
+                          {"결론"}
+                        </p>
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          {t.conclusion}
+                        </p>
                       </div>
                     </div>
 
-                    {/* Right: Code preview */}
+                    {/* Right: Code preview (Markdown viewer + syntax highlight) */}
                     <div className="bg-secondary/30 p-6">
                       <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gradient-primary">
                         {"코드 예시"}
                       </p>
-                      <div className="overflow-x-auto rounded-lg bg-background/80 p-4">
-                        <pre className="font-mono text-xs leading-relaxed text-foreground/80">
-                          <code>{t.code}</code>
-                        </pre>
-                      </div>
+                      <ToastMarkdown
+                        mode="view"
+                        value={`\`\`\`tsx\n${t.code}\n\`\`\``}
+                        onChange={() => {}}
+                      />
                     </div>
                   </div>
                 </div>
