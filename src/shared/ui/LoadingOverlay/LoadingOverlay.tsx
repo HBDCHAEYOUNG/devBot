@@ -29,7 +29,7 @@ export function LoadingOverlay({ message, className }: LoadingOverlayProps) {
       )}
     >
       <div
-        className="h-10 w-10 rounded-full border-2 border-muted-foreground/30 border-t-foreground animate-spin"
+        className="h-10 w-10 rounded-full spinner-gradient-ring animate-spin"
         aria-hidden
       />
       <p className="text-sm text-muted-foreground text-center max-w-[240px]">

@@ -202,6 +202,27 @@ body {
     background-clip: padding-box, border-box;
     box-shadow: var(--neon-glow);
   }
+  /* same as above but inner area transparent (e.g. loading spinner over overlay) */
+  .border-gradient-primary-transparent {
+    border: 2px solid transparent;
+    background-image: linear-gradient(transparent, transparent),
+      var(--gradient-primary);
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: var(--neon-glow);
+  }
+  /* 스피너 전용: 링만 그라데이션(원둘레 1/4), 나머지 연한 회색, 가운데 투명(뒷배경 보임), 링만 회전 */
+  .spinner-gradient-ring {
+    background: conic-gradient(
+      from 0deg,
+      #22d3ee 0deg,
+      #a78bfa 45deg,
+      #e879f9 90deg,
+      var(--border) 90deg
+    );
+    mask: radial-gradient(circle, transparent 65%, black 65%);
+    -webkit-mask: radial-gradient(circle, transparent 65%, black 65%);
+  }
 }
 
 @layer base {
