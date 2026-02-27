@@ -28,6 +28,7 @@ import {
   settingsStorage,
   SETTINGS_SAVED_EVENT,
 } from "@/features/generator-settings";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface GeneratorFormProps {
   onSubmit: (request: GenerateDocumentRequest) => void;
@@ -35,10 +36,12 @@ interface GeneratorFormProps {
 }
 
 export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
+  const isMobile = useIsMobile();
+
   const [topic, setTopic] = useState("");
-  const [templateType, setTemplateType] = useState<TemplateType | "">("");
-  const [difficulty, setDifficulty] = useState<Difficulty | "">("");
-  const [length, setLength] = useState<Length | "">("");
+  const [templateType, setTemplateType] = useState<TemplateType | "">("til");
+  const [difficulty, setDifficulty] = useState<Difficulty | "">("beginner");
+  const [length, setLength] = useState<Length | "">("medium");
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
   useEffect(() => {
@@ -59,7 +62,8 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
       setLength(s.length ?? "");
     };
     window.addEventListener(SETTINGS_SAVED_EVENT, applyDefaults);
-    return () => window.removeEventListener(SETTINGS_SAVED_EVENT, applyDefaults);
+    return () =>
+      window.removeEventListener(SETTINGS_SAVED_EVENT, applyDefaults);
   }, []);
 
   const isFormValid = topic.trim() && templateType && difficulty && length;
@@ -87,15 +91,26 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 items-center w-full common-padding bg-white"
+      className={cn(
+        "flex flex-col gap-2 items-center w-full common-padding bg-white",
+        isMobile && ""
+      )}
     >
-      <div className="flex gap-2 w-full">
+      <div className="flex w-full items-center ">
+        <p
+          className={cn(
+            "text-sm text-muted-foreground pl-2",
+            isMobile && "hidden"
+          )}
+        >
+          글 형식은
+        </p>
         <Select
           value={templateType}
           onValueChange={(value) => setTemplateType(value as TemplateType)}
           disabled={isLoading}
         >
-          <SelectTrigger className="max-w-[200px] flex-1">
+          <SelectTrigger className="w-fit border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-black! ">
             <SelectValue placeholder="템플릿 유형" />
           </SelectTrigger>
           <SelectContent>
@@ -108,13 +123,20 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
             </SelectGroup>
           </SelectContent>
         </Select>
-
+        <p
+          className={cn(
+            "text-sm text-muted-foreground pl-2",
+            isMobile && "hidden"
+          )}
+        >
+          난이도는
+        </p>
         <Select
           value={difficulty}
           onValueChange={(value) => setDifficulty(value as Difficulty)}
           disabled={isLoading}
         >
-          <SelectTrigger className="w-22">
+          <SelectTrigger className="w-fit border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-black!">
             <SelectValue placeholder="난이도" />
           </SelectTrigger>
           <SelectContent>
@@ -128,13 +150,21 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           </SelectContent>
         </Select>
 
+        <p
+          className={cn(
+            "text-sm text-muted-foreground pl-2",
+            isMobile && "hidden"
+          )}
+        >
+          분량은
+        </p>
         <Select
           value={length}
           onValueChange={(value) => setLength(value as Length)}
           disabled={isLoading}
         >
-          <SelectTrigger className="w-22">
-            <SelectValue placeholder="분량" />
+          <SelectTrigger className="w-fit border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-black!">
+            <SelectValue placeholder="선택" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -146,6 +176,15 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
             </SelectGroup>
           </SelectContent>
         </Select>
+        <p
+          className={cn(
+            "text-sm text-muted-foreground pl-2",
+            isMobile && "hidden"
+          )}
+        >
+          {" "}
+          생성할래요.
+        </p>
       </div>
       <div className="flex gap-2 w-full relative">
         <Textarea
