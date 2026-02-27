@@ -58,6 +58,10 @@ export function ToastMarkdown({
           el: containerRef.current,
           height: resolvedHeight,
           initialValue: value,
+          initialEditType: "markdown",
+          hideModeSwitch: true,
+          toolbarItems: [],
+          previewStyle: "vertical",
         });
         editor.on("change", () => {
           onChangeRef.current(editor.getMarkdown());
@@ -108,7 +112,11 @@ export function ToastMarkdown({
       ref={containerRef}
       className={cn(
         "w-full",
-        mode === "view" ? "toast-markdown-view-mode" : undefined
+        mode === "view"
+          ? "toast-markdown-view-mode"
+          : mode === "edit"
+          ? "toast-markdown-edit-mode"
+          : undefined
       )}
     />
   );
