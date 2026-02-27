@@ -30,7 +30,7 @@ export default function GeneratorPage() {
   };
   return (
     <>
-      <div className="w-full flex flex-col gap-4 items-center h-svh max-w-4xl mx-auto">
+      <div className="w-full flex flex-col gap-4 items-center h-svh max-w-6xl mx-auto">
         <p className="text-4xl text-center content-end mb-auto mt-auto h-[120px]">
           어떤 주제로 써볼까요?
         </p>

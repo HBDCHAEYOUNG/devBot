@@ -96,11 +96,11 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
     <div className="flex flex-col large-padding-top">
       <header
         className={cn(
-          "flex flex-col common-padding-x common-padding-y max-w-4xl mx-auto w-full",
+          "flex flex-col common-padding-x common-padding-y max-w-6xl mx-auto w-full",
           mode === "edit" && "p-0!"
         )}
       >
-        <div className="flex flex-col items-center max-w-4xl mx-auto">
+        <div className="flex flex-col items-center max-w-6xl mx-auto">
           {mode === "edit" && (
             <nav className="flex items-center gap-2 w-fit justify-end fixed top-5 z-20 pointer-events-auto right-8">
               <button
@@ -130,7 +130,7 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
         </div>
 
         {mode === "view" && (
-          <nav className="flex items-center pt-6 gap-2 w-full max-w-4xl mx-auto ">
+          <nav className="flex items-center pt-6 gap-2 w-full max-w-6xl mx-auto ">
             <time className="text-sm text-gray-500 mr-auto">
               {dayjs(document.createdAt).format("YYYY년 M월 D일 A h:mm")}
             </time>
@@ -213,7 +213,7 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
 
       <hr />
 
-      <section className="flex flex-col gap-4 common-padding-x max-w-4xl  w-full mx-auto">
+      <section className="flex flex-col gap-4 common-padding-x max-w-6xl  w-full mx-auto">
         <SeoSummaryAccordion
           metaDescription={
             mode === "edit" ? metaDescription : document.metaDescription
