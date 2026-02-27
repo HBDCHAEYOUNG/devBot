@@ -6,6 +6,12 @@ import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import "prismjs/themes/prism-tomorrow.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import Prism from "prismjs";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-python";
 import { cn } from "@/lib/utils";
 
 type ToastMode = "view" | "edit";
@@ -27,6 +33,26 @@ type ToastInstance = {
   getMarkdown?: () => string;
   setMarkdown?: (markdown: string) => void;
   on?: (event: string, callback: () => void) => void;
+};
+
+const languageAliasMap: Record<string, string> = {
+  js: "javascript",
+  javascript: "javascript",
+  ts: "typescript",
+  typescript: "typescript",
+  jsx: "jsx",
+  tsx: "tsx",
+  py: "python",
+  python: "python",
+};
+
+const prismHighlighter = {
+  ...Prism,
+  highlight(code: string, _grammar: Prism.Grammar, lang: string) {
+    const normalized = languageAliasMap[lang] ?? lang ?? "javascript";
+    const grammar = Prism.languages[normalized] ?? Prism.languages.javascript;
+    return Prism.highlight(code, grammar, normalized);
+  },
 };
 
 export function ToastMarkdown({
@@ -59,8 +85,14 @@ export function ToastMarkdown({
 
     const init = async () => {
       if (mode === "edit") {
-        const { default: Editor } = await import("@toast-ui/editor");
+        const [{ default: Editor }, { default: codeSyntaxHighlight }] =
+          await Promise.all([
+            import("@toast-ui/editor"),
+            import("@toast-ui/editor-plugin-code-syntax-highlight"),
+          ]);
+
         if (cancelled || !containerRef.current) return;
+
         const editor = new Editor({
           el: containerRef.current,
           height: resolvedHeight,
@@ -69,25 +101,29 @@ export function ToastMarkdown({
           hideModeSwitch: true,
           toolbarItems: [],
           previewStyle: previewStyleProp,
+          plugins: [[codeSyntaxHighlight, { highlighter: prismHighlighter }]],
         });
+
         editor.on("change", () => {
           onChangeRef.current(editor.getMarkdown());
         });
+
         instanceRef.current = editor as ToastInstance;
       } else {
-        const { default: Viewer } = await import(
-          "@toast-ui/editor/dist/toastui-editor-viewer"
-        );
-        const { default: codeSyntaxHighlight } = await import(
-          "@toast-ui/editor-plugin-code-syntax-highlight"
-        );
+        const [{ default: Viewer }, { default: codeSyntaxHighlight }] =
+          await Promise.all([
+            import("@toast-ui/editor/dist/toastui-editor-viewer"),
+            import("@toast-ui/editor-plugin-code-syntax-highlight"),
+          ]);
 
         if (cancelled || !containerRef.current) return;
+
         const viewer = new Viewer({
           el: containerRef.current,
           initialValue: value,
-          plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
+          plugins: [[codeSyntaxHighlight, { highlighter: prismHighlighter }]],
         });
+
         instanceRef.current = viewer as ToastInstance;
       }
     };

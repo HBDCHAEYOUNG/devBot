@@ -4,6 +4,10 @@ declare module "@toast-ui/editor-plugin-code-syntax-highlight" {
 }
 
 declare module "@toast-ui/editor" {
+  type ToastUIPlugin =
+    | ((context: unknown) => void)
+    | [(context: unknown) => void, { highlighter: unknown }];
+
   interface EditorOptions {
     el: HTMLElement;
     height?: string;
@@ -14,6 +18,7 @@ declare module "@toast-ui/editor" {
     toolbarItems?: readonly unknown[] | unknown[];
     /** 'tab' = Write/Preview 탭, 'vertical' = 탭 없이 세로 분할. vertical + CSS로 preview 숨기면 write만 표시 */
     previewStyle?: "tab" | "vertical";
+    plugins?: ToastUIPlugin[];
   }
 
   export default class Editor {
