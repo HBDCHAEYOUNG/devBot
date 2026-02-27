@@ -42,6 +42,12 @@
     #a78bfa 50%,
     #e879f9 100%
   );
+  --gradient-primary-soft: linear-gradient(
+    120deg,
+    rgba(34, 211, 238, 0.18) 0%,
+    rgba(167, 139, 250, 0.18) 50%,
+    rgba(232, 121, 249, 0.18) 100%
+  );
   --neon-glow: 0 0 12px rgba(230, 222, 253, 0.35),
     0 0 24px rgba(222, 212, 251, 0.15);
 }
@@ -183,6 +189,9 @@ body {
   /* background gradient utility (for badges, buttons, pills, etc.) */
   .bg-gradient-primary {
     background-image: var(--gradient-primary);
+  }
+  .bg-gradient-primary-soft {
+    background-image: var(--gradient-primary-soft);
   }
   /* gradient border + neon glow (use with border-2; inner area stays transparent so bg-primary/5 etc. can show) */
   .border-gradient-primary {
