@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { AppShell } from "./AppShell";
+import MyDocumentsCookieSync from "./MyDocumentsCookieSync";
 
 export const metadata = {
   title: "AI 기술 블로그 글 생성기",
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <MyDocumentsCookieSync />
         <AppShell>{children}</AppShell>
       </body>
     </html>

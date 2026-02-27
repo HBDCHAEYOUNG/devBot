@@ -31,7 +31,7 @@ export function LandingIntroSection() {
         </p>
 
         <Link
-          href="/"
+          href="/?fromLanding=1"
           className="mt-10 inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-gradient-primary px-8 text-base font-semibold text-primary-foreground hover:bg-gradient-primary/90 cursor-pointer"
         >
           {"무료로 시작하기"}
