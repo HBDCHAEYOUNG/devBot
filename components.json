@@ -18,5 +18,7 @@
     "ui": "@/ui/_shadcn",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@react-bits": "https://reactbits.dev/r/{name}.json"
+  }
 }

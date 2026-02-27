@@ -12,7 +12,7 @@ export function LandingIntroSection() {
       <div className="relative mx-auto max-w-6xl px-6 text-center">
         <Badge
           variant="outline"
-          className="mb-6 gap-1.5 border-primary/30 bg-primary/5 px-3 py-1 text-primary"
+          className="mb-6 gap-1.5 border-primary/30 bg-primary/5 px-3 py-1 text-gradient-primary"
         >
           <Sparkles className="size-3.5" />
           {"AI 기반 기술 블로그 자동 생성"}
