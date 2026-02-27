@@ -7,7 +7,7 @@ export function LandingIntroSection() {
   return (
     <section
       id="intro"
-      className="relative overflow-hidden pt-6 pb-20 md:pt-20 md:pb-32"
+      className="relative overflow-hidden pt-20 pb-20  md:pb-32"
     >
       <div className="relative mx-auto max-w-6xl px-6 text-center">
         <Badge
@@ -32,7 +32,7 @@ export function LandingIntroSection() {
 
         <Link
           href="/?fromLanding=1"
-          className="mt-10 inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-gradient-primary px-8 text-base font-semibold text-primary-foreground hover:bg-gradient-primary/90 cursor-pointer"
+          className="mt-10 inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-gradient-primary px-8 text-base font-semibold text-primary-foreground hover:bg-gradient-primary cursor-pointer"
         >
           {"무료로 시작하기"}
           <Arrow className="size-4 rotate-90" />
