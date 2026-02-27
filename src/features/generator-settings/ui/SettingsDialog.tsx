@@ -107,7 +107,7 @@ export function SettingsDialog() {
                   className={cn(
                     "flex-1 min-w-0 flex flex-col gap-1 p-4 rounded-xl border-2 text-left transition-colors",
                     settings.templateType === value
-                      ? "border-primary bg-primary/5"
+                      ? "border-gradient-primary bg-primary/5"
                       : "border-input bg-muted/30 hover:border-muted-foreground/30 hover:bg-muted/50"
                   )}
                 >
@@ -144,7 +144,7 @@ export function SettingsDialog() {
                   className={cn(
                     "flex-1 min-w-0 flex flex-col gap-1 p-4 rounded-xl border-2 text-left transition-colors",
                     settings.difficulty === value
-                      ? "border-primary bg-primary/5"
+                      ? "border-gradient-primary bg-primary/5"
                       : "border-input bg-muted/30 hover:border-muted-foreground/30 hover:bg-muted/50"
                   )}
                 >
@@ -178,7 +178,7 @@ export function SettingsDialog() {
                   className={cn(
                     "flex-1 min-w-0 flex flex-col gap-1 p-4 rounded-xl border-2 text-left transition-colors",
                     settings.length === value
-                      ? "border-primary bg-primary/5"
+                      ? "border-gradient-primary bg-primary/5"
                       : "border-input bg-muted/30 hover:border-muted-foreground/30 hover:bg-muted/50"
                   )}
                 >
@@ -195,16 +195,20 @@ export function SettingsDialog() {
             </div>
           </div>
         </div>
-        <DialogFooter className="flex justify-between gap-2 flex-row">
+        <DialogFooter className="flex justify-between gap-2 flex-row h-12">
           <Button
             type="button"
             variant="outline"
             onClick={handleReset}
-            className="flex-1"
+            className="flex-1 h-full"
           >
             초기화
           </Button>
-          <Button type="button" onClick={handleSave} className="flex-1">
+          <Button
+            type="button"
+            onClick={handleSave}
+            className="flex-1 h-full bg-gradient-primary text-white border-0 shadow--neon-glow hover:opacity-90"
+          >
             저장
           </Button>
         </DialogFooter>

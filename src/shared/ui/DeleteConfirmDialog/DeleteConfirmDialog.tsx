@@ -55,7 +55,7 @@ export function DeleteConfirmDialog({
               type="button"
               variant="default"
               onClick={handleConfirm}
-              className="flex-1 rounded-sm"
+              className="flex-1 rounded-sm bg-gradient-primary text-white border-0 shadow--neon-glow hover:opacity-90"
             >
               삭제
             </Button>

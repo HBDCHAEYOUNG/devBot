@@ -59,7 +59,10 @@ export function RenameDialogContent({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-        className={cn(error && "border-red-500 focus-visible:ring-red-500/50")}
+        className={cn(
+          "outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+          error && "border-red-500 focus-visible:ring-red-500/50"
+        )}
         aria-invalid={!!error}
         autoFocus
       />
@@ -68,11 +71,20 @@ export function RenameDialogContent({
           {error}
         </p>
       )}
-      <DialogFooter className="mt-6 gap-2">
-        <Button type="button" variant="outline" onClick={onClose}>
+      <DialogFooter className="flex flex-row mt-6 gap-2 w-full m">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onClose}
+          className="flex-1 h-full"
+        >
           {cancelLabel}
         </Button>
-        <Button type="button" onClick={handleSubmitClick}>
+        <Button
+          type="button"
+          onClick={handleSubmitClick}
+          className="flex-1 h-full bg-gradient-primary text-white border-0 shadow--neon-glow hover:opacity-90"
+        >
           {submitLabel}
         </Button>
       </DialogFooter>

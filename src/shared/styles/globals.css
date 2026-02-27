@@ -36,8 +36,14 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  /* primary brand gradient: blue -> violet -> pink */
-  --gradient-primary: linear-gradient(90deg, #1d9bf0 0%, #8b5cf6 50%, #ec4899 100%);
+  --gradient-primary: linear-gradient(
+    120deg,
+    #22d3ee 0%,
+    #a78bfa 50%,
+    #e879f9 100%
+  );
+  --neon-glow: 0 0 12px rgba(167, 139, 250, 0.35),
+    0 0 24px rgba(167, 139, 250, 0.15);
 }
 
 @theme inline {
@@ -177,6 +183,15 @@ body {
   /* background gradient utility (for badges, buttons, pills, etc.) */
   .bg-gradient-primary {
     background-image: var(--gradient-primary);
+  }
+  /* gradient border + neon glow (use with border-2; inner area stays transparent so bg-primary/5 etc. can show) */
+  .border-gradient-primary {
+    border: 2px solid transparent;
+    background-image: linear-gradient(var(--background), var(--background)),
+      var(--gradient-primary);
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: var(--neon-glow);
   }
 }
 

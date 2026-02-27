@@ -105,13 +105,13 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
             <nav className="flex items-center gap-2 w-fit justify-end fixed top-5 z-20 pointer-events-auto right-8">
               <button
                 onClick={() => setMode("view")}
-                className="cursor-pointer border border-gray-300 text-sm px-1 rounded-xs"
+                className="cursor-pointer border border-gray-300 text-sm p-1 rounded-sm"
               >
                 취소
               </button>
               <button
                 onClick={onSave}
-                className="cursor-pointer bg-primary text-primary-foreground text-sm px-1 rounded-xs"
+                className="cursor-pointer bg-gradient-primary text-white text-sm p-1 rounded-sm"
               >
                 저장
               </button>

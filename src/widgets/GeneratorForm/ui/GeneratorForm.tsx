@@ -209,7 +209,7 @@ export function GeneratorForm({ onSubmit, isLoading }: GeneratorFormProps) {
           disabled={isLoading}
           className={cn(
             "w-10 h-10 rounded-full flex items-center justify-center absolute right-4 bottom-3 cursor-pointer",
-            isLoading || !isFormValid ? "bg-gray-500" : "bg-black"
+            isLoading || !isFormValid ? "bg-gray-500" : "bg-gradient-primary"
           )}
         >
           <ArrowUpIcon className="w-6 h-6 text-white" />
