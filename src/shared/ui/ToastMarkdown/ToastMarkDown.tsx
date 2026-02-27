@@ -40,7 +40,8 @@ export function ToastMarkdown({
   const instanceRef = useRef<ToastInstance | null>(null);
   const onChangeRef = useRef(onChange);
 
-  const resolvedHeight = height ?? (mode === "edit" ? "580px" : undefined);
+  const resolvedHeight =
+    height ?? (mode === "edit" ? "calc(100vh - 240px)" : undefined);
 
   useEffect(() => {
     onChangeRef.current = onChange;

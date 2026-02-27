@@ -25,6 +25,7 @@ import {
   buildMarkdownExportContent,
   buildHTMLExportContent,
 } from "@/lib/downloadUtils";
+import { cn } from "@/lib/utils";
 
 dayjs.locale("ko");
 
@@ -92,8 +93,13 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
   const handleDelete = () => deleteDocument(document.id);
 
   return (
-    <div className="flex flex-col large-padding-y">
-      <header className="flex flex-col common-padding-x common-padding-y max-w-4xl mx-auto w-full">
+    <div className="flex flex-col large-padding-top">
+      <header
+        className={cn(
+          "flex flex-col common-padding-x common-padding-y max-w-4xl mx-auto w-full",
+          mode === "edit" && "p-0!"
+        )}
+      >
         <div className="flex flex-col items-center max-w-4xl mx-auto">
           {mode === "edit" && (
             <nav className="flex items-center gap-2 w-fit justify-end fixed top-5 z-20 pointer-events-auto right-8">
@@ -207,7 +213,7 @@ export function DocumentDetail({ document }: DocumentDetailProps) {
 
       <hr />
 
-      <section className="flex flex-col gap-10 common-padding-x max-w-4xl common-padding-y w-full mx-auto">
+      <section className="flex flex-col gap-4 common-padding-x max-w-4xl  w-full mx-auto">
         <SeoSummaryAccordion
           metaDescription={
             mode === "edit" ? metaDescription : document.metaDescription
