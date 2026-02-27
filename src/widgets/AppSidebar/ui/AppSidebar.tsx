@@ -51,9 +51,9 @@ export function AppSidebar() {
             className="cursor-pointer mr-auto"
             onClick={handleClose}
           >
-            <MainIcon className="size-6 cursor-pointer" />
+            <MainIcon className="size-5 cursor-pointer" />
           </Link>
-          <CloseIcon className="size-5 cursor-pointer" onClick={handleClose} />
+          <CloseIcon className="size-4 cursor-pointer" onClick={handleClose} />
         </span>
         <Link
           href="/"
