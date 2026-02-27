@@ -65,10 +65,10 @@ export function LandingFeaturesSection() {
               className="group border-border/50 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
             >
               <CardContent className="pt-6">
-                <div className="mb-4 flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                  <feature.icon className="size-5 text-primary" />
+                <div className="mb-4 flex size-10 items-center justify-center rounded-lg bg-gradient-primary-soft text-primary">
+                  <feature.icon className="size-5" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-lg font-semibold text-primary">
                   {feature.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
