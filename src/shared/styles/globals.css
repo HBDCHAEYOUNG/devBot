@@ -36,6 +36,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* primary brand gradient: blue -> violet -> pink */
+  --gradient-primary: linear-gradient(90deg, #1d9bf0 0%, #8b5cf6 50%, #ec4899 100%);
 }
 
 @theme inline {
@@ -164,6 +166,17 @@ body {
   .small-padding-x {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
+  }
+  /* text gradient utility (use for titles/buttons) */
+  .text-gradient-primary {
+    background-image: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* background gradient utility (for badges, buttons, pills, etc.) */
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
   }
 }
 
