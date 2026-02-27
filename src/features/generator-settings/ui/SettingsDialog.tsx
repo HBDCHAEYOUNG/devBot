@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import type { TemplateType, Difficulty, Length } from "@/types/document.types";
 import {
   TEMPLATE_LABELS,
+  TEMPLATE_DESCRIPTIONS,
   DIFFICULTY_LABELS,
   LENGTH_LABELS,
 } from "@/config/constants";
@@ -14,39 +15,18 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Button,
 } from "@/ui/index";
+import { cn } from "@/lib/utils";
 import SettingsIcon from "@/icons/setting.svg";
 import {
   settingsStorage,
   SETTINGS_SAVED_EVENT,
 } from "../model/settingsStorage";
 
-const NONE = "__none__";
-
-const SETTINGS_FIELDS = [
-  {
-    id: "templateType" as const,
-    label: "템플릿 유형",
-    labels: TEMPLATE_LABELS,
-  },
-  {
-    id: "difficulty" as const,
-    label: "난이도",
-    labels: DIFFICULTY_LABELS,
-  },
-  {
-    id: "length" as const,
-    label: "분량",
-    labels: LENGTH_LABELS,
-  },
-] as const;
+const DEFAULT_TEMPLATE = "til";
+const DEFAULT_DIFFICULTY = "beginner";
+const DEFAULT_LENGTH = "medium";
 
 type SettingsState = {
   templateType: string;
@@ -55,9 +35,9 @@ type SettingsState = {
 };
 
 const INITIAL_SETTINGS: SettingsState = {
-  templateType: NONE,
-  difficulty: NONE,
-  length: NONE,
+  templateType: DEFAULT_TEMPLATE,
+  difficulty: DEFAULT_DIFFICULTY,
+  length: DEFAULT_LENGTH,
 };
 
 export function SettingsDialog() {
@@ -69,9 +49,9 @@ export function SettingsDialog() {
     const saved = settingsStorage.get();
     const id = setTimeout(() => {
       setSettings({
-        templateType: saved.templateType ?? NONE,
-        difficulty: saved.difficulty ?? NONE,
-        length: saved.length ?? NONE,
+        templateType: saved.templateType ?? DEFAULT_TEMPLATE,
+        difficulty: saved.difficulty ?? DEFAULT_DIFFICULTY,
+        length: saved.length ?? DEFAULT_LENGTH,
       });
     }, 0);
     return () => clearTimeout(id);
@@ -80,11 +60,9 @@ export function SettingsDialog() {
   const handleSave = () => {
     const { templateType, difficulty, length } = settings;
     settingsStorage.set({
-      ...(templateType !== NONE && {
-        templateType: templateType as TemplateType,
-      }),
-      ...(difficulty !== NONE && { difficulty: difficulty as Difficulty }),
-      ...(length !== NONE && { length: length as Length }),
+      templateType: templateType as TemplateType,
+      difficulty: difficulty as Difficulty,
+      length: length as Length,
     });
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent(SETTINGS_SAVED_EVENT));
@@ -107,39 +85,115 @@ export function SettingsDialog() {
           <SettingsIcon className="size-5" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-fit">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>기본 설정</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col md:flex-row gap-2 items-center justify-center py-10">
-          {SETTINGS_FIELDS.map((field) => (
-            <div
-              key={field.id}
-              className="flex md:flex-col gap-20 md:gap-2 justify-between items-center md:justify-center w-full"
-            >
-              <label className="font-medium whitespace-nowrap">
-                {field.label}
-              </label>
-              <Select
-                value={settings[field.id]}
-                onValueChange={(value) => updateSetting(field.id, value)}
-              >
-                <SelectTrigger className="w-28">
-                  <SelectValue placeholder="선택 안 함" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={NONE}>선택 안 함</SelectItem>
-                    {Object.entries(field.labels).map(([value, label]) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+        <div className="flex flex-col gap-8 py-6">
+          {/* 템플릿 유형: 카드 */}
+          <div className="flex flex-col gap-3">
+            <label className="font-medium">템플릿 유형</label>
+            <div className="flex flex-col md:flex-row gap-3">
+              {(
+                Object.entries(TEMPLATE_LABELS) as [
+                  keyof typeof TEMPLATE_LABELS,
+                  string
+                ][]
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => updateSetting("templateType", value)}
+                  className={cn(
+                    "flex-1 min-w-0 flex flex-col gap-1 p-4 rounded-xl border-2 text-left transition-colors",
+                    settings.templateType === value
+                      ? "border-primary bg-primary/5"
+                      : "border-input bg-muted/30 hover:border-muted-foreground/30 hover:bg-muted/50"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "font-medium text-center",
+                      settings.templateType === value && "text-primary"
+                    )}
+                  >
+                    {label}
+                  </span>
+                  <span className="text-xs text-muted-foreground break-keep">
+                    {TEMPLATE_DESCRIPTIONS[value]}
+                  </span>
+                </button>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* 난이도: 카드 */}
+          <div className="flex flex-col gap-3">
+            <label className="font-medium">난이도</label>
+            <div className="flex flex-row gap-3">
+              {(
+                Object.entries(DIFFICULTY_LABELS) as [
+                  keyof typeof DIFFICULTY_LABELS,
+                  string
+                ][]
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => updateSetting("difficulty", value)}
+                  className={cn(
+                    "flex-1 min-w-0 flex flex-col gap-1 p-4 rounded-xl border-2 text-left transition-colors",
+                    settings.difficulty === value
+                      ? "border-primary bg-primary/5"
+                      : "border-input bg-muted/30 hover:border-muted-foreground/30 hover:bg-muted/50"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "font-medium text-center",
+                      settings.difficulty === value && "text-primary"
+                    )}
+                  >
+                    {label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 분량: 카드 */}
+          <div className="flex flex-col gap-3">
+            <label className="font-medium">분량</label>
+            <div className="flex flex-row gap-3">
+              {(
+                Object.entries(LENGTH_LABELS) as [
+                  keyof typeof LENGTH_LABELS,
+                  string
+                ][]
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => updateSetting("length", value)}
+                  className={cn(
+                    "flex-1 min-w-0 flex flex-col gap-1 p-4 rounded-xl border-2 text-left transition-colors",
+                    settings.length === value
+                      ? "border-primary bg-primary/5"
+                      : "border-input bg-muted/30 hover:border-muted-foreground/30 hover:bg-muted/50"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "font-medium text-center",
+                      settings.length === value && "text-primary"
+                    )}
+                  >
+                    {label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
         <DialogFooter className="flex justify-between gap-2 flex-row">
           <Button
