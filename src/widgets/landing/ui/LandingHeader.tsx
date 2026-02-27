@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export function LandingHeader() {
   return (
-    <header className="bg-background/90 common-padding fixed top-0 left-0 flex items-center justify-between gap-2 z-10 w-full shadow-xs h-16!">
-      <div className="flex items-center gap-2 justify-center w-full">
+    <header className="bg-background/90 common-padding fixed top-0 left-0 flex items-center gap-2 z-10 w-full shadow-xs h-16!">
+      <div className="flex items-center gap-2 justify-end md:justify-center w-full">
         <Link
           href="/?fromLanding=1"
           className="cursor-pointer text-xl font-light fixed left-8"
