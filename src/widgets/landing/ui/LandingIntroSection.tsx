@@ -64,10 +64,13 @@ export function LandingIntroSection() {
                 {" \\"}
               </div>
               <div className="text-muted-foreground pl-4">
-                {"--keywords "}
-                <span className="text-chart-1">
-                  {'"상태관리, hooks, 함수형 컴포넌트"'}
-                </span>
+                {"--difficulty "}
+                <span className="text-chart-1">{'"intermediate"'}</span>
+                {" \\"}
+              </div>
+              <div className="text-muted-foreground pl-4">
+                {"--length "}
+                <span className="text-chart-1">{'"medium"'}</span>
                 {" \\"}
               </div>
               <div className="text-muted-foreground pl-4">
