@@ -26,9 +26,11 @@ export function SeoSummaryAccordion({
         className="border-x border-border rounded-sm"
       >
         <AccordionTrigger className="cursor-pointer border-y border-border rounded-sm! px-3 py-3">
-          {mode === "view"
-            ? "추천 SEO 메타 설명 확인하기"
-            : "SEO 메타 설명 수정하기"}
+          <span className="text-gradient-primary">
+            {mode === "view"
+              ? "생성된 SEO 메타 설명 확인하기"
+              : "SEO 메타 설명 수정하기"}
+          </span>
         </AccordionTrigger>
         <AccordionContent className="border-b border-border rounded-sm flex flex-col gap-4 py-2">
           <Textarea
@@ -39,7 +41,7 @@ export function SeoSummaryAccordion({
             placeholder="SEO 메타 설명"
           />
           {mode === "view" && (
-            <p className="text-rose-400 text-xs px-3 pb-2">
+            <p className="text-destructive text-xs px-3 pb-2">
               ✔︎ HTML 다운로드 시 meta 태그의 content 안에 들어가며, 검색
               결과·링크 공유 미리보기에 사용됩니다.
             </p>
