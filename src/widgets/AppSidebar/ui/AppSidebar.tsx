@@ -43,7 +43,7 @@ export function AppSidebar() {
       : null;
 
   return (
-    <Sidebar className="overflow-y-scroll">
+    <Sidebar>
       <SidebarHeader>
         <span className="flex items-center gap-2 pr-1 pl-2 small-padding-top">
           <Link
@@ -65,7 +65,7 @@ export function AppSidebar() {
         </Link>
         <h4 className="text-sm text-gray-600 small-padding-x">내 문서</h4>
       </SidebarHeader>
-      <SidebarContent className="px-2">
+      <SidebarContent className="px-2 border-none! outline-none!">
         <DocumentsList
           documents={documents}
           activeId={activeId}
