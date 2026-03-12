@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDocumentSchema } from "@/config/documentSchema";
 import { generateRequestBodySchema } from "@/config/generateRequestSchema";
-import { DOCUMENT_PROMPTS } from "@/features/generate-document/config/prompts";
+import { USER_PROMPTS } from "@/features/generate-document/config/prompts";
 import type { GenerateDocumentResponse } from "@/types/document.types";
 
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: firstMessage }, { status: 400 });
     }
     const { topic, length, difficulty, templateType } = parsed.data;
-    const prompt = DOCUMENT_PROMPTS[templateType](topic, difficulty, length);
+    const prompt = USER_PROMPTS[templateType](topic, difficulty, length);
 
     const apiKey = process.env.OPENAI_API_KEY;
 
