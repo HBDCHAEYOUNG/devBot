@@ -99,7 +99,14 @@ export function ToastMarkdown({
           initialValue: value,
           initialEditType: "markdown",
           hideModeSwitch: true,
-          toolbarItems: [],
+          toolbarItems: [
+            ["heading", "bold", "italic", "strike"],
+            ["hr", "quote"],
+            ["ul", "ol", "task"],
+            ["table", "link", "image"],
+            ["code", "codeblock"],
+            ["scrollSync"],
+          ],
           previewStyle: previewStyleProp,
           plugins: [[codeSyntaxHighlight, { highlighter: prismHighlighter }]],
         });

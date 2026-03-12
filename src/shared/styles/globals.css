@@ -236,9 +236,6 @@ body {
 
 /* Toast UI Editor edit: Write/Preview 탭 제거(previewStyle: vertical) + 미리보기 패널 숨겨서 write만 표시 */
 
-.toastui-editor-toolbar {
-  display: none !important;
-}
 .toast-markdown-edit-mode
   .toastui-editor-md-container
   .toastui-editor-md-editor {
