@@ -1,20 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DOCUMENT_SCHEMA } from "@/config/documentSchema";
+import { generateRequestBodySchema } from "@/config/generateRequestSchema";
+import { DOCUMENT_PROMPTS } from "@/features/generate-document/config/prompts";
 import type { GenerateDocumentResponse } from "@/types/document.types";
 
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { prompt } = body;
-
-    if (!prompt) {
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
       return NextResponse.json(
-        { error: "프롬프트가 필요합니다." },
+        { error: "요청 본문이 올바른 JSON이 아닙니다." },
         { status: 400 }
       );
     }
+
+    const parsed = generateRequestBodySchema.safeParse(body);
+    if (!parsed.success) {
+      const fieldErrors = parsed.error.flatten().fieldErrors;
+      const firstMessage =
+        fieldErrors.topic?.[0] ??
+        fieldErrors.length?.[0] ??
+        fieldErrors.difficulty?.[0] ??
+        fieldErrors.templateType?.[0] ??
+        parsed.error.issues[0]?.message ??
+        "요청 형식이 올바르지 않습니다.";
+      return NextResponse.json({ error: firstMessage }, { status: 400 });
+    }
+    const { topic, length, difficulty, templateType } = parsed.data;
+    const prompt = DOCUMENT_PROMPTS[templateType](topic, difficulty, length);
 
     const apiKey = process.env.OPENAI_API_KEY;
 
