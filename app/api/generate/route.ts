@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDocumentSchema } from "@/config/documentSchema";
+import { DOCUMENT_SCHEMA } from "@/config/documentSchema";
 import { generateRequestBodySchema } from "@/config/generateRequestSchema";
 import { USER_PROMPTS } from "@/features/generate-document/config/prompts";
 import type { GenerateDocumentResponse } from "@/types/document.types";
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
         temperature: 0.7,
         response_format: {
           type: "json_schema",
-          json_schema: getDocumentSchema(length),
+          json_schema: DOCUMENT_SCHEMA,
         },
       }),
     });
